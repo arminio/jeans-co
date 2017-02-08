@@ -1,0 +1,19 @@
+package spatutorial.shared
+
+
+import boopickle.Default._
+
+/**
+  * Created by armin.
+  */
+object Types {
+  type Country = String
+  type Manufacturer = String
+  type Gender = String
+  type Size = String
+  type Colour = String
+  type Style = String
+  type Count = Int
+
+  implicit val datePickler = transformPickler((t: Long) => new java.util.Date(t))(_.getTime)
+}
