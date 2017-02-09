@@ -12,43 +12,27 @@ import spatutorial.shared._
 
 import scalacss.ScalaCssReact._
 
-object TopManufacturers {
-  @inline private def bss = GlobalStyles.bootstrapStyles
-  val style = bss.listGroup
-  
+trait GenericComponent {
   case class Props(proxy: ModelProxy[SalesAndFilter])
-
   case class State(selectedItem: Option[Sale] = None, showTodoForm: Boolean = false, salesFilter: SaleFilter = SaleFilter.empty)
 
-  private def newSelectedValue(e: ReactEventI) =
+  @inline private def bss = GlobalStyles.bootstrapStyles
+  val style = bss.listGroup
+
+  def newSelectedValue(e: ReactEventI) =
     if (e.currentTarget.value.toLowerCase().startsWith("select "))
       None
     else
       Some(e.currentTarget.value)
 
+}
+
+
+object TopManufacturers extends GenericComponent {
+
   class Backend($: BackendScope[Props, State]) {
     def mounted(props: Props) =
       Callback.when(props.proxy().sales.isEmpty)(props.proxy.dispatchCB(RefreshSales))
-
-    //    def editTodo(item: Option[Sale]) =
-    //      // activate the edit dialog
-    //      $.modState(s => s.copy(selectedItem = item, showTodoForm = true)) //!@
-    //
-    //    def todoEdited(item: TodoItem, cancelled: Boolean) = {
-    //      val cb = if (cancelled) {
-    //        // nothing to do here
-    //        Callback.log("Todo editing cancelled")
-    //      } else {
-    //        Callback.log(s"Todo edited: $item") >>
-    //          $.props >>= (_.proxy.dispatchCB(UpdateTodo(item)))
-    //      }
-    //      // hide the edit dialog, chain callbacks
-    //      cb >> $.modState(s => s.copy(showTodoForm = false))
-    //    }
-
-//    def makeOptions(sales: Sales) = {
-//       sales.allColours.map(s => <.option(s))
-//    }
 
     def render(p: Props, s: State) = {
       val proxy = p.proxy()
@@ -79,8 +63,10 @@ object TopManufacturers {
         things.map(t => <.option(selectedItem.fold(false)(_ == t.toString) ?= (^.selected := true), t.toString))
     }
 
-    def colourFilterSelected(saleFilter: SaleFilter)(e: ReactEventI) =
-      $.props >>= (p => p.proxy.dispatchCB(UpdatedSalesFilter(saleFilter.copy(colour = newSelectedValue(e)))))
+    def colourFilterSelected(saleFilter: SaleFilter)(e: ReactEventI) = {
+      val props: CallbackTo[Props] = $.props
+      props >>= (p => p.proxy.dispatchCB(UpdatedSalesFilter(saleFilter.copy(colour = newSelectedValue(e)))))
+    }
 
     def countryFilterSelected(saleFilter: SaleFilter)(e: ReactEventI) =
       $.props >>= (p => p.proxy.dispatchCB(UpdatedSalesFilter(saleFilter.copy(deliveryCountry = newSelectedValue(e)))))
@@ -109,3 +95,4 @@ object TopManufacturers {
   /** Returns a function compatible with router location system while using our own props */
   def apply(proxy: ModelProxy[SalesAndFilter]) = component(Props(proxy))
 }
+

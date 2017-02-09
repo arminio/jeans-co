@@ -35,12 +35,12 @@ object MainMenu {
 
   private val menuItems = Seq(
     
-    MenuItem(1, _ => "Top Manufacturers", Icon.check, TopManufacturersLoc),
-    MenuItem(2, _ => "Top Selling Sizes", Icon.check, TopSellingSizesLoc),
-    MenuItem(3, _ => "Top Selling Months", Icon.check, TopSellingMonthsLoc),
-    MenuItem(4, _ => "Top Selling Countries", Icon.check, TopSellingCountriesLoc),
-    MenuItem(5, _ => "Top Selling Colours", Icon.check, TopSellingColoursLoc),
-    MenuItem(6, _ => "Top Selling Styles", Icon.check, TopSellingStylesLoc)
+    MenuItem(1, _ => "Top Manufacturers", Icon.train, TopManufacturersLoc),
+    MenuItem(2, _ => "Top Selling Sizes", Icon.sitemap, TopSellingSizesLoc),
+    MenuItem(3, _ => "Top Selling Months", Icon.birthdayCake, TopSellingMonthsLoc),
+    MenuItem(4, _ => "Top Selling Countries", Icon.flag, TopSellingCountriesLoc),
+    MenuItem(5, _ => "Top Selling Colours", Icon.reddit, TopSellingColoursLoc),
+    MenuItem(6, _ => "Top Selling Styles", Icon.star, TopSellingStylesLoc)
   )
 
   private class Backend($: BackendScope[Props, Unit]) {
