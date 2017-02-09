@@ -20,6 +20,7 @@ import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
 case object RefreshSales extends Action
 case class UpdateAllSales(sales: Seq[Sale]) extends Action
 case class UpdatedSalesFilter(salesFilter: SaleFilter) extends Action
+case object ResetSalesFilter extends Action
 
 
 //!@
@@ -90,7 +91,10 @@ class SalesHandler[M](modelRW: ModelRW[M, Pot[Sales]]) extends ActionHandler(mod
 class FilterUpdateHandler[M](modelRW: ModelRW[M, SaleFilter]) extends ActionHandler(modelRW) {
   override def handle = {
     case UpdatedSalesFilter(filter) =>
+      println(filter)
       updated(filter)
+    case ResetSalesFilter =>
+      updated(SaleFilter.empty)
   }
 }
 
