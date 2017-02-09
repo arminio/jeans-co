@@ -7,7 +7,7 @@ import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
  */
 object Settings {
   /** The name of your application */
-  val name = "scalajs-spa"
+  val name = "prototype2"
 
   /** The version of your application */
   val version = "1.1.4"
@@ -70,6 +70,7 @@ object Settings {
     "me.chrons" %%% "diode-react" % versions.diode,
     "org.scala-js" %%% "scalajs-dom" % versions.scalaDom,
     "org.scala-js" %%% "scalajs-java-time" % "0.2.0",
+    "com.github.karasiq" %%% "scalajs-highcharts" % "1.2.0",
     "com.lihaoyi" %%% "utest" % versions.uTest % Test,
     "org.scalatest" %%% "scalatest" % "3.0.1" % "test"
 
@@ -82,6 +83,7 @@ object Settings {
     "org.webjars" % "jquery" % versions.jQuery / "jquery.js" minified "jquery.min.js",
     "org.webjars" % "bootstrap" % versions.bootstrap / "bootstrap.js" minified "bootstrap.min.js" dependsOn "jquery.js",
     "org.webjars" % "chartjs" % versions.chartjs / "Chart.js" minified "Chart.min.js",
-    "org.webjars" % "log4javascript" % versions.log4js / "js/log4javascript_uncompressed.js" minified "js/log4javascript.js"
+    "org.webjars" % "log4javascript" % versions.log4js / "js/log4javascript_uncompressed.js" minified "js/log4javascript.js",
+    "org.webjars" % "highcharts" % "5.0.7" / "js/highcharts.js" minified "js/highcharts.js"
   ))
 }

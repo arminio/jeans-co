@@ -50,7 +50,6 @@ object SaleFilter {
 
 
 
-
 sealed trait TodoPriority
 
 case object TodoLow extends TodoPriority

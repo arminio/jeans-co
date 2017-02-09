@@ -7,16 +7,22 @@ import diode.util._
 import diode.react.ReactConnector
 import spatutorial.shared.{Api, Sale, SaleFilter, TodoItem}
 import boopickle.Default._
+import grouper.SalesGrouper
 import spatutorial.shared.Types._
+//!@ intellij removes these imports :-(
+//import boopickle.Default._
+//import grouper.SalesGrouper
+//import spatutorial.shared.Types._
+
 import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
 
 // Actions
 case object RefreshSales extends Action
 case class UpdateAllSales(sales: Seq[Sale]) extends Action
-case class UpdateSalesFilter(sales: Seq[Sale], salesFilter: SaleFilter) extends Action
+case class UpdatedSalesFilter(salesFilter: SaleFilter) extends Action
 
 
-
+//!@
 case object RefreshTodos extends Action
 
 case class UpdateAllTodos(todos: Seq[TodoItem]) extends Action
@@ -29,12 +35,16 @@ case class UpdateMotd(potResult: Pot[String] = Empty) extends PotAction[String, 
   override def next(value: Pot[String]) = UpdateMotd(value)
 }
 
+case class SalesAndFilter(sales: Pot[Sales], saleFilter: SaleFilter)
+
 // The base model of our application
-case class RootModel(todos: Pot[Todos], motd: Pot[String], sales:Pot[Sales], saleFilter: SaleFilter)
+case class RootModel(todos: Pot[Todos], //!@
+                     motd: Pot[String], //!@
+                     salesAndFilter: SalesAndFilter)
 
 
 
-case class Sales(sales: Seq[Sale]) {
+case class Sales(items: Seq[Sale]) {
 
 }
 
@@ -71,12 +81,10 @@ class SalesHandler[M](modelRW: ModelRW[M, Pot[Sales]]) extends ActionHandler(mod
   *
   * @param modelRW Reader/Writer to access the model
   */
-class SalesFilterHandler[M](modelRW: ModelRW[M, SaleFilter]) extends ActionHandler(modelRW) {
+class FilterUpdateHandler[M](modelRW: ModelRW[M, SaleFilter]) extends ActionHandler(modelRW) {
   override def handle = {
-
-    case UpdateSalesFilter(sales, filter) =>
-      // got new sales, update model
-      updated(Ready(Sales(sales)))
+    case UpdatedSalesFilter(filter) =>
+      updated(filter)
   }
 }
 
@@ -119,10 +127,11 @@ class MotdHandler[M](modelRW: ModelRW[M, Pot[String]]) extends ActionHandler(mod
 // Application circuit
 object SPACircuit extends Circuit[RootModel] with ReactConnector[RootModel] {
   // initial application model
-  override protected def initialModel = RootModel(Empty, Empty, Empty, SaleFilter.empty)
+  override protected def initialModel = RootModel(Empty, Empty, SalesAndFilter(Empty, SaleFilter.empty))
   // combine all handlers into one
   override protected val actionHandler = composeHandlers(
-    new SalesHandler(zoomRW(_.sales)((m, v) => m.copy(sales = v))),
+    new SalesHandler(zoomRW(_.salesAndFilter.sales)((m, v) => m.copy(salesAndFilter = m.salesAndFilter.copy(sales = v)))),
+    new FilterUpdateHandler(zoomRW(_.salesAndFilter.saleFilter)((m, v) => m.copy(salesAndFilter = m.salesAndFilter.copy(saleFilter = v)))),
     new TodoHandler(zoomRW(_.todos)((m, v) => m.copy(todos = v))),
     new MotdHandler(zoomRW(_.motd)((m, v) => m.copy(motd = v)))
   )

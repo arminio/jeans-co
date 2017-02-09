@@ -13,20 +13,21 @@ import spatutorial.shared._
 
 import scalacss.ScalaCssReact._
 
-object Todo {
+object TopManufacturers {
+  @inline private def bss = GlobalStyles.bootstrapStyles
+  val style = bss.listGroup
+  
+  case class Props(proxy: ModelProxy[SalesAndFilter])
 
-  case class Props(proxy: ModelProxy[Pot[Todos]])
-
-  case class State(selectedItem: Option[TodoItem] = None, showTodoForm: Boolean = false)
+  case class State(selectedItem: Option[Sale] = None, showTodoForm: Boolean = false)
 
   class Backend($: BackendScope[Props, State]) {
     def mounted(props: Props) =
-      // dispatch a message to refresh the todos, which will cause TodoStore to fetch todos from the server
-      Callback.when(props.proxy().isEmpty)(props.proxy.dispatchCB(RefreshTodos))
+      Callback.when(props.proxy().sales.isEmpty)(props.proxy.dispatchCB(RefreshSales))
 
-    def editTodo(item: Option[TodoItem]) =
+    def editTodo(item: Option[Sale]) =
       // activate the edit dialog
-      $.modState(s => s.copy(selectedItem = item, showTodoForm = true))
+      $.modState(s => s.copy(selectedItem = item, showTodoForm = true)) //!@
 
     def todoEdited(item: TodoItem, cancelled: Boolean) = {
       val cb = if (cancelled) {
@@ -40,17 +41,25 @@ object Todo {
       cb >> $.modState(s => s.copy(showTodoForm = false))
     }
 
-    def render(p: Props, s: State) =
+    def render(p: Props, s: State) = {
+      val proxy = p.proxy()
       Panel(Panel.Props("What needs to be done"), <.div(
-        p.proxy().renderFailed(ex => "Error loading"),
-        p.proxy().renderPending(_ > 500, _ => "Loading..."),
-        p.proxy().render(todos => TodoList(todos.items, item => p.proxy.dispatchCB(UpdateTodo(item)),
-          item => editTodo(Some(item)), item => p.proxy.dispatchCB(DeleteTodo(item)))),
-        Button(Button.Props(editTodo(None)), Icon.plusSquare, " New")),
+        proxy.sales.renderFailed(ex => "Error loading"),
+        proxy.sales.renderPending(_ > 500, _ => "Loading..."),
+        proxy.sales.render { sales =>
+//          TodoList(sales.items, item => p.proxy.dispatchCB(UpdateTodo(item)),
+//            item => editTodo(Some(item)), item => p.proxy.dispatchCB(DeleteTodo(item)))
+//          for(item <- sales.items)
+//            <.li(item)
+          <.ul(style.listGroup)(sales.items map { (s: Sale) => <.li(s.toString)})
+
+        },
+        Button(Button.Props(editTodo(None)), Icon.plusSquare, " New")))
         // if the dialog is open, add it to the panel
-        if (s.showTodoForm) TopManufacturersForm(TopManufacturersForm.Props(s.selectedItem, todoEdited))
-        else // otherwise add an empty placeholder
-          Seq.empty[ReactElement])
+//        if (s.showTodoForm) TodoForm(TodoForm.Props(s.selectedItem, todoEdited))
+//        else // otherwise add an empty placeholder
+//          Seq.empty[ReactElement])
+    }
   }
 
   // create the React component for To Do management
@@ -61,10 +70,10 @@ object Todo {
     .build
 
   /** Returns a function compatible with router location system while using our own props */
-  def apply(proxy: ModelProxy[Pot[Todos]]) = component(Props(proxy))
+  def apply(proxy: ModelProxy[SalesAndFilter]) = component(Props(proxy))
 }
 
-object TodoForm {
+object TopManufacturersForm {
   // shorthand for styles
   @inline private def bss = GlobalStyles.bootstrapStyles
 
