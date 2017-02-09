@@ -5,6 +5,7 @@ import diode.react._
 import diode.data.Pot
 import grouper.SalesGrouper
 import japgolly.scalajs.react._
+import japgolly.scalajs.react.vdom.ReactTagOf
 import japgolly.scalajs.react.vdom.prefix_<^._
 import spatutorial.client.components.Bootstrap._
 import spatutorial.client.components._
@@ -12,6 +13,7 @@ import spatutorial.client.logger._
 import spatutorial.client.services._
 import spatutorial.shared._
 
+import scala.collection.immutable.Seq
 import scalacss.ScalaCssReact._
 
 object TopManufacturers {
@@ -21,6 +23,13 @@ object TopManufacturers {
   case class Props(proxy: ModelProxy[SalesAndFilter])
 
   case class State(selectedItem: Option[Sale] = None, showTodoForm: Boolean = false, salesFilter: SaleFilter = SaleFilter.empty)
+
+  private def newSelectedValue(e: _root_.japgolly.scalajs.react.ReactEventI) = {
+    e.currentTarget.value match {
+      case "-" => None
+      case value => Some(value)
+    }
+  }
 
   class Backend($: BackendScope[Props, State]) {
     def mounted(props: Props) =
@@ -42,18 +51,12 @@ object TopManufacturers {
       cb >> $.modState(s => s.copy(showTodoForm = false))
     }
 
-    def makeOptions(sales: Sales) = {
-       sales.allColours.map(s => <.option(s))
-    }
+//    def makeOptions(sales: Sales) = {
+//       sales.allColours.map(s => <.option(s))
+//    }
 
-    def colourFilterSelected(saleFilter: SaleFilter)(e: ReactEventI) = {
-//      $.modState(s => s.copy(item = s.item.copy(priority = newPri)))
-//      $.props >>= (_.proxy.dispatchCB(UpdateTodo(item)))
-
-      val newColour = e.currentTarget.value
-
-      $.props >>= (p => p.proxy.dispatchCB(UpdatedSalesFilter(saleFilter.copy(colour = Some(newColour)))))
-
+    def makeOptions[T](fieldType: String, things: List[T]) = {
+      <.option(s"Select $fieldType") +: things.map(t => <.option(t.toString))
     }
 
     def render(p: Props, s: State) = {
@@ -62,16 +65,16 @@ object TopManufacturers {
         proxy.sales.renderFailed(ex => "Error loading"),
         proxy.sales.renderPending(_ > 500, _ => "Loading..."),
         proxy.sales.render { sales =>
+          val saleFilter = proxy.saleFilter
           <.div(
             <.div(
-              <.select(^.id := "colour", ^.onChange ==> colourFilterSelected(proxy.saleFilter), sales.allColours.map(<.option(_))),
-              <.select(sales.allDeliveryCountries.map(<.option(_))),
-              <.select(sales.allGenders.map(<.option(_))),
-              <.select(sales.allSizes.map(<.option(_))),
-              <.select(sales.allStyles.map(<.option(_)))
-              
+              <.select(^.id := "colour", ^.onChange ==> colourFilterSelected(saleFilter), makeOptions("Colour", sales.allColours)),
+              <.select(^.id := "country", ^.onChange ==> countryFilterSelected(saleFilter), makeOptions("Country", sales.allDeliveryCountries)),
+              <.select(^.id := "gender", ^.onChange ==> genderFilterSelected(saleFilter), makeOptions("Gender", sales.allGenders)),
+              <.select(^.id := "size", ^.onChange ==> sizeFilterSelected(saleFilter), makeOptions("Size", sales.allSizes)),
+              <.select(^.id := "style", ^.onChange ==> styleFilterSelected(saleFilter), makeOptions("Style", sales.allStyles))
             ),
-            <.ul(style.listGroup)(SalesGrouper.topSellingManufacturer(sales.items, proxy.saleFilter) map { (s) => <.li(s.toString)})
+            <.ul(style.listGroup)(SalesGrouper.topSellingManufacturer(sales.items, saleFilter) map { (s) => <.li(s.toString) })
           )
 
         },
@@ -81,6 +84,21 @@ object TopManufacturers {
 //        else // otherwise add an empty placeholder
 //          Seq.empty[ReactElement])
     }
+
+    def colourFilterSelected(saleFilter: SaleFilter)(e: ReactEventI) =
+      $.props >>= (p => p.proxy.dispatchCB(UpdatedSalesFilter(saleFilter.copy(colour = newSelectedValue(e)))))
+
+    def countryFilterSelected(saleFilter: SaleFilter)(e: ReactEventI) =
+      $.props >>= (p => p.proxy.dispatchCB(UpdatedSalesFilter(saleFilter.copy(deliveryCountry = newSelectedValue(e)))))
+
+    def genderFilterSelected(saleFilter: SaleFilter)(e: ReactEventI) =
+      $.props >>= (p => p.proxy.dispatchCB(UpdatedSalesFilter(saleFilter.copy(gender = newSelectedValue(e)))))
+
+    def sizeFilterSelected(saleFilter: SaleFilter)(e: ReactEventI) =
+      $.props >>= (p => p.proxy.dispatchCB(UpdatedSalesFilter(saleFilter.copy(size = newSelectedValue(e)))))
+
+    def styleFilterSelected(saleFilter: SaleFilter)(e: ReactEventI) =
+      $.props >>= (p => p.proxy.dispatchCB(UpdatedSalesFilter(saleFilter.copy(style = newSelectedValue(e)))))
   }
 
   // create the React component for To Do management
