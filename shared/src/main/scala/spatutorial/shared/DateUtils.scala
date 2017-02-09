@@ -8,6 +8,20 @@ object DateUtils {
   import java.time.ZoneId
   import java.util.Date
 
+  val monthNames = List(
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December")
+
   implicit def asDate(localDate:LocalDate): Date = {
 //    Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant)
     new Date(localDate.toEpochDay)

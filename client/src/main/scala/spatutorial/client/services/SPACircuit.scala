@@ -45,7 +45,13 @@ case class RootModel(todos: Pot[Todos], //!@
 
 
 case class Sales(items: Seq[Sale]) {
-
+  val allDeliveryCountries = items.groupBy(_.deliveryCountry).keys.toList.sorted
+  val allStyles = items.groupBy(_.style).keys.toList.sorted
+  val allColours = items.groupBy(_.colour).keys.toList.sorted
+  val allOrderDates = items.groupBy(_.orderDate).keys.toList.sorted
+  val allGenders = items.groupBy(_.gender).keys.toList.sorted
+  val allManufacturers = items.groupBy(_.manufacturer).keys.toList.sorted
+  val allSizes = items.groupBy(_.size).keys.toList.sorted
 }
 
 case class Todos(items: Seq[TodoItem]) {

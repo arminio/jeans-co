@@ -4,7 +4,7 @@ import diode.react.ModelProxy
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.prefix_<^._
-import spatutorial.client.SPAMain.{DashboardLoc, Loc, TodoLoc, TopManufacturersLoc}
+import spatutorial.client.SPAMain._
 import spatutorial.client.components.Bootstrap.CommonStyle
 import spatutorial.client.components.Icon._
 import spatutorial.client.components._
@@ -34,9 +34,13 @@ object MainMenu {
   }
 
   private val menuItems = Seq(
-    MenuItem(1, _ => "Dashboard", Icon.dashboard, DashboardLoc),
-    MenuItem(2, buildTodoMenu, Icon.caretUp, TodoLoc),
-    MenuItem(3, _ => "Top Manufacturers", Icon.check, TopManufacturersLoc)
+    
+    MenuItem(1, _ => "Top Manufacturers", Icon.check, TopManufacturersLoc),
+    MenuItem(2, _ => "Top Selling Sizes", Icon.check, TopSellingSizesLoc),
+    MenuItem(3, _ => "Top Selling Months", Icon.check, TopSellingMonthsLoc),
+    MenuItem(4, _ => "Top Selling Countries", Icon.check, TopSellingCountriesLoc),
+    MenuItem(5, _ => "Top Selling Colours", Icon.check, TopSellingColoursLoc),
+    MenuItem(6, _ => "Top Selling Styles", Icon.check, TopSellingStylesLoc)
   )
 
   private class Backend($: BackendScope[Props, Unit]) {

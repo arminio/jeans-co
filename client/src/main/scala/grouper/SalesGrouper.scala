@@ -1,9 +1,9 @@
 package grouper
 
-import java.time.{LocalDate, Month}
-
 import spatutorial.shared.Types.{Colour, Country, Manufacturer, Size, Style}
-import spatutorial.shared.{Sale, SaleFilter}
+import spatutorial.shared.{DateUtils, Sale, SaleFilter}
+
+import scala.scalajs.js
 
 
 
@@ -11,7 +11,7 @@ case class TopSellingManufacturer(manufacturer: Manufacturer, count: Int)
 
 case class TopSellingSizes(size: Size, count: Int)
 
-case class TopSellingMonths(month: Month, count: Int)
+case class TopSellingMonths(month: String, count: Int)
 
 case class TopSellingCountries(country: Country, count: Int)
 
@@ -41,8 +41,10 @@ object SalesGrouper {
   def topSellingMonths(sales: Seq[Sale],
                        saleFilter: SaleFilter): Seq[TopSellingMonths] = {
 
-    topSellings(sales, saleFilter, s => LocalDate.ofEpochDay(s.orderDate.getTime).getMonth)
-      .map(mc => TopSellingMonths(mc._1, mc._2)).toSeq.sortBy(_.count).reverse
+    topSellings(sales, saleFilter, s => {
+      val orderDate = new js.Date(s.orderDate.getTime)
+      orderDate.getFullYear() + "-" + DateUtils.monthNames(orderDate.getMonth)
+    }).map(mc => TopSellingMonths(mc._1, mc._2)).toSeq.sortBy(_.count).reverse
   }
 
   def topSellingCountries(sales: Seq[Sale],

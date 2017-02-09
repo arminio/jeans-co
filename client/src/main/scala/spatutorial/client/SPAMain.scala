@@ -25,6 +25,11 @@ object SPAMain extends js.JSApp {
   case object TodoLoc extends Loc
   
   case object TopManufacturersLoc extends Loc
+  case object TopSellingSizesLoc extends Loc
+  case object TopSellingMonthsLoc extends Loc
+  case object TopSellingCountriesLoc extends Loc
+  case object TopSellingColoursLoc extends Loc
+  case object TopSellingStylesLoc extends Loc
 
 
   // configure the router
@@ -37,6 +42,11 @@ object SPAMain extends js.JSApp {
     (
       staticRoute(root, DashboardLoc) ~> renderR(ctl => SPACircuit.wrap(_.motd)(proxy => Dashboard(ctl, proxy)))
       | staticRoute("#topManufactureres", TopManufacturersLoc) ~> renderR(ctl => salesAndFilterWrapper(TopManufacturers(_)))
+      | staticRoute("#topSellingSizes", TopSellingSizesLoc) ~> renderR(ctl => salesAndFilterWrapper(TopSellingSizes(_)))
+      | staticRoute("#topSellingMonths", TopSellingMonthsLoc) ~> renderR(ctl => salesAndFilterWrapper(TopSellingMonths(_)))
+      | staticRoute("#topSellingCountries", TopSellingCountriesLoc) ~> renderR(ctl => salesAndFilterWrapper(TopSellingCountries(_)))
+      | staticRoute("#topSellingColours", TopSellingColoursLoc) ~> renderR(ctl => salesAndFilterWrapper(TopSellingColours(_)))
+      | staticRoute("#topSellingStyles", TopSellingStylesLoc) ~> renderR(ctl => salesAndFilterWrapper(TopSellingStyles(_)))
       | staticRoute("#todo", TodoLoc) ~> renderR(ctl => <.h1("to does go here"))
       ).notFound(redirectToPage(DashboardLoc)(Redirect.Replace))
   }.renderWith(layout)
