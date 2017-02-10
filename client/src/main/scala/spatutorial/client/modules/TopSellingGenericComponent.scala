@@ -21,17 +21,19 @@ trait TopSellingGenericComponent {
       Some(e.currentTarget.value)
 
   def makeOptions[T](fieldType: String, things: List[T], selectedItem: Option[T]) = {
-    <.option(^.id := "top-select", s"Select $fieldType", selectedItem.isEmpty ?= (^.selected := true)) +:
+    <.option(s"Select $fieldType", selectedItem.isEmpty ?= (^.selected := true)) +:
       things.map(t => <.option(selectedItem.fold(false)(_ == t.toString) ?= (^.selected := true), t.toString))
   }
 
   def createFilterSelectionArea(sales: Sales, saleFilter: SaleFilter, props: CallbackTo[Props]) = {
     <.div(
-      <.select(^.id := "colour", ^.onChange ==> colourFilterSelected(saleFilter, props), makeOptions("Colour", sales.allColours, saleFilter.colour)),
-      <.select(^.id := "country", ^.onChange ==> countryFilterSelected(saleFilter, props), makeOptions("Country", sales.allDeliveryCountries, saleFilter.deliveryCountry)),
-      <.select(^.id := "gender", ^.onChange ==> genderFilterSelected(saleFilter, props), makeOptions("Gender", sales.allGenders, saleFilter.gender)),
-      <.select(^.id := "size", ^.onChange ==> sizeFilterSelected(saleFilter, props), makeOptions("Size", sales.allSizes, saleFilter.size)),
-      <.select(^.id := "style", ^.onChange ==> styleFilterSelected(saleFilter, props), makeOptions("Style", sales.allStyles, saleFilter.style)),
+      <.div(
+        <.select(^.id := "colour", ^.onChange ==> colourFilterSelected(saleFilter, props), makeOptions("Colour", sales.allColours, saleFilter.colour)),
+        <.select(^.id := "country", ^.onChange ==> countryFilterSelected(saleFilter, props), makeOptions("Country", sales.allDeliveryCountries, saleFilter.deliveryCountry)),
+        <.select(^.id := "gender", ^.onChange ==> genderFilterSelected(saleFilter, props), makeOptions("Gender", sales.allGenders, saleFilter.gender)),
+        <.select(^.id := "size", ^.onChange ==> sizeFilterSelected(saleFilter, props), makeOptions("Size", sales.allSizes, saleFilter.size)),
+        <.select(^.id := "style", ^.onChange ==> styleFilterSelected(saleFilter, props), makeOptions("Style", sales.allStyles, saleFilter.style))
+      ),
       <.button("Rest Filters", ^.onClick --> resetFilters(props))
     )
   }

@@ -1,5 +1,7 @@
 package spatutorial.client.modules
 
+import java.awt.Color
+
 import diode.data.Pot
 import diode.react._
 import japgolly.scalajs.react._
@@ -17,13 +19,26 @@ object Dashboard {
 
   case class State(motdWrapper: ReactConnectProxy[Pot[String]])
 
+  val r = Random
   // create dummy data for the chart
   val cp = Chart.ChartProps(
     "Test chart",
-    Chart.BarChart,
+    Chart.PieChart,
     ChartData(
       Random.alphanumeric.map(_.toUpper.toString).distinct.take(10),
-      Seq(ChartDataset(Iterator.continually(Random.nextDouble() * 10).take(10).toSeq, "Data1"))
+      Seq(ChartDataset(Iterator.continually(Random.nextDouble() * 100).take(10).toSeq, "Data1",
+        Seq("#FF6384",
+          "#36A2EB",
+          "#FFCE56",
+          "#0E9A0C",
+          "#903BC7",
+          "#7B9867",
+          "#579537",
+          "#03123F",
+          "#CFC179",
+          "#DA4141",
+          "#A22A83"
+        )))
     )
   )
 

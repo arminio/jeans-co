@@ -1,17 +1,15 @@
 package grouper
 
-import spatutorial.shared.Types.{Colour, Country, Manufacturer, Size, Style}
+import spatutorial.shared.Types.{Colour, Country, Manufacturer, Size, Style, YearMonth}
 import spatutorial.shared.{DateUtils, Sale, SaleFilter}
 
 import scala.scalajs.js
-
-
 
 case class TopSellingManufacturer(manufacturer: Manufacturer, count: Int)
 
 case class TopSellingSizes(size: Size, count: Int)
 
-case class TopSellingMonths(month: String, count: Int)
+case class TopSellingMonths(yearMonth: YearMonth, count: Int)
 
 case class TopSellingCountries(country: Country, count: Int)
 
@@ -20,7 +18,6 @@ case class TopSellingColours(colour:Colour, count: Int)
 case class TopSellingStyles(style:Style, count: Int)
 
 object SalesGrouper {
-
 
   def topSellingManufacturer(sales: Seq[Sale],
                              saleFilter: SaleFilter): Seq[TopSellingManufacturer] = {
@@ -68,15 +65,11 @@ object SalesGrouper {
       .map(mc => TopSellingStyles(mc._1, mc._2)).toSeq.sortBy(_.count).reverse
   }
 
-
-
   private def topSellings[T](sales: Seq[Sale], saleFilter: SaleFilter, groupByF: Sale => T): Map[T, Int] = {
     filterSales(sales, saleFilter)
       .groupBy(groupByF)
       .mapValues(calculateCount)
   }
-
-
 
   def filterSales(sales: Seq[Sale], saleFilter: SaleFilter): Seq[Sale] = {
     sales
@@ -93,6 +86,5 @@ object SalesGrouper {
   private def calculateCount(sales: Seq[Sale]): Int = {
     sales.foldLeft(0)((acc, s) => acc + s.count)
   }
-
 
 }

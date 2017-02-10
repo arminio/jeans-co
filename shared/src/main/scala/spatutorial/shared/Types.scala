@@ -7,6 +7,7 @@ import boopickle.Default._
   * Created by armin.
   */
 object Types {
+  type YearMonth = String
   type Country = String
   type Manufacturer = String
   type Gender = String

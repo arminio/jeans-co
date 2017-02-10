@@ -18,11 +18,11 @@ trait ChartDataset extends js.Object {
 
 object ChartDataset {
   def apply(data: Seq[Double],
-            label: String, backgroundColor: String = "#8080FF", borderColor: String = "#404080"): ChartDataset = {
+            label: String, backgroundColor: Seq[String] = Seq("#8080FF"), borderColor: String = "#404080"): ChartDataset = {
     js.Dynamic.literal(
       label = label,
       data = data.toJSArray,
-      backgroundColor = backgroundColor,
+      backgroundColor = backgroundColor.toJSArray,
       borderColor = borderColor
     ).asInstanceOf[ChartDataset]
   }
@@ -84,8 +84,9 @@ object Chart {
   sealed trait ChartStyle
 
   case object LineChart extends ChartStyle
-
   case object BarChart extends ChartStyle
+  case object PieChart extends ChartStyle
+  case object DoughnutChart extends ChartStyle
 
   case class ChartProps(name: String, style: ChartStyle, data: ChartData, width: Int = 500, height: Int = 300)
 
@@ -101,6 +102,8 @@ object Chart {
       scope.props.style match {
         case LineChart => new JSChart(ctx, ChartConfiguration("line", scope.props.data))
         case BarChart => new JSChart(ctx, ChartConfiguration("bar", scope.props.data))
+        case DoughnutChart => new JSChart(ctx, ChartConfiguration("doughnut", scope.props.data))
+        case PieChart => new JSChart(ctx, ChartConfiguration("pie", scope.props.data))
         case _ => throw new IllegalArgumentException
       }
     }).build

@@ -13,6 +13,7 @@ import spatutorial.shared._
 import scalacss.ScalaCssReact._
 
 object TopSellingStyles extends TopSellingGenericComponent {
+
   class Backend($: BackendScope[Props, State]) {
     def mounted(props: Props) =
       Callback.when(props.proxy().sales.isEmpty)(props.proxy.dispatchCB(RefreshSales))

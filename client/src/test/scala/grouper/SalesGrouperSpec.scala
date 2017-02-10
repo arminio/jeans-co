@@ -6,6 +6,9 @@ import java.util.Date
 import org.scalatest.{FunSpec, Matchers}
 import spatutorial.shared.{Sale, SaleFilter}
 
+import scala.scalajs.js
+
+
 /**
   * Created by armin.
   */
@@ -153,54 +156,69 @@ class SalesGrouperSpec extends FunSpec with Matchers {
   }
 
   describe("top selling months") {
-    import spatutorial.shared.DateUtils._
-    val jan1 = LocalDate.of(2016, Month.JANUARY, 1)
+//    import spatutorial.shared.DateUtils._
+//    val jan1 = LocalDate.of(2016, Month.JANUARY, 1)
+//    val jan2 = LocalDate.of(2016, Month.JANUARY, 2)
+//    val jan3 = LocalDate.of(2016, Month.JANUARY, 3)
+//
+//    val feb1 = LocalDate.of(2016, Month.FEBRUARY, 1)
+//    val feb2 = LocalDate.of(2016, Month.FEBRUARY, 2)
+//    val feb3 = LocalDate.of(2016, Month.FEBRUARY, 3)
+//
+//    val mar1 = LocalDate.of(2016, Month.MARCH, 3)
 
-    val jan2 = LocalDate.of(2016, Month.JANUARY, 2)
-    val jan3 = LocalDate.of(2016, Month.JANUARY, 3)
+    val jan1 = new js.Date(2016, 0, 1)
+    val jan2 = new js.Date(2016, 0, 2)
+    val jan3 = new js.Date(2016, 0, 3)
 
-    val feb1 = LocalDate.of(2016, Month.FEBRUARY, 1)
-    val feb2 = LocalDate.of(2016, Month.FEBRUARY, 2)
-    val feb3 = LocalDate.of(2016, Month.FEBRUARY, 3)
+    val feb1 = new js.Date(2016, 1, 1)
+    val feb2 = new js.Date(2016, 1, 2)
+    val feb3 = new js.Date(2016, 1, 3)
 
-    val mar1 = LocalDate.of(2016, Month.MARCH, 3)
+    val mar1 = new js.Date(2016, 2, 1)
+
+
+//    new js.Date(s.orderDate.getTime)
 
     it("should group by top selling months globally and results should be sorted descending by count") {
 
       val sales = Seq(
-        Sale(jan1, country1, manufacturer1, male, size1, "red", "some-style", 1),
-        Sale(jan2, country1, manufacturer1, male, size1, "blue", "some-style", 2),
-        Sale(jan3, country1, manufacturer1, male, size1, "red", "some-style", 3),
-        Sale(feb1, country1, manufacturer1, female, size2, "red", "some-style", 11),
-        Sale(feb2, country1, manufacturer1, female, size2, "red", "some-style", 12),
-        Sale(feb3, country1, manufacturer1, female, size2, "red", "some-style", 13),
-        Sale(mar1, country1, manufacturer1, female, size1, "red", "some-style", 900)
+        Sale(toJavaDate(jan1), country1, manufacturer1, male, size1, "red", "some-style", 1),
+        Sale(toJavaDate(jan2), country1, manufacturer1, male, size1, "blue", "some-style", 2),
+        Sale(toJavaDate(jan3), country1, manufacturer1, male, size1, "red", "some-style", 3),
+        Sale(toJavaDate(feb1), country1, manufacturer1, female, size2, "red", "some-style", 11),
+        Sale(toJavaDate(feb2), country1, manufacturer1, female, size2, "red", "some-style", 12),
+        Sale(toJavaDate(feb3), country1, manufacturer1, female, size2, "red", "some-style", 13),
+        Sale(toJavaDate(mar1), country1, manufacturer1, female, size1, "red", "some-style", 900)
       )
 
       SalesGrouper.topSellingMonths(sales, SaleFilter()) shouldBe
         Seq(
-          TopSellingMonths(Month.MARCH, 900),
-          TopSellingMonths(Month.FEBRUARY, 11 + 12 + 13),
-          TopSellingMonths(Month.JANUARY, 1 + 2 + 3)
+          TopSellingMonths("2016-March", 900),
+          TopSellingMonths("2016-February", 11 + 12 + 13),
+          TopSellingMonths("2016-January", 1 + 2 + 3)
         )
     }
 
     it("should group by top selling months, filter by country and results should be sorted descending by count") {
 
       val sales = Seq(
-        Sale(jan1, country1, manufacturer1, male, size1, "red", "some-style", 1),
-        Sale(jan2, country1, manufacturer1, male, size1, "blue", "some-style", 2),
-        Sale(feb1, country2, manufacturer1, female, size2, "red", "some-style", 11),
-        Sale(mar1, country1, manufacturer1, female, size1, "red", "some-style", 900)
+        Sale(toJavaDate(jan1), country1, manufacturer1, male, size1, "red", "some-style", 1),
+        Sale(toJavaDate(jan2), country1, manufacturer1, male, size1, "blue", "some-style", 2),
+        Sale(toJavaDate(feb1), country2, manufacturer1, female, size2, "red", "some-style", 11),
+        Sale(toJavaDate(mar1), country1, manufacturer1, female, size1, "red", "some-style", 900)
       )
 
       SalesGrouper.topSellingMonths(sales, SaleFilter(deliveryCountry = Some(country1))) shouldBe
         Seq(
-          TopSellingMonths(Month.MARCH, 900),
-          TopSellingMonths(Month.JANUARY, 1 + 2)
+          TopSellingMonths("2016-March", 900),
+          TopSellingMonths("2016-January", 1 + 2)
         )
     }
   }
 
 
+  private def toJavaDate(jsDate: js.Date) = {
+    new Date(jsDate.getTime().toLong)
+  }
 }
