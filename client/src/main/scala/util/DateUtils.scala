@@ -1,11 +1,10 @@
-package spatutorial.shared
+package util
+
+import scala.scalajs.js
 
 object DateUtils {
 
-  import java.time.Instant
-  import java.time.LocalDate
-  import java.time.LocalDateTime
-  import java.time.ZoneId
+  import java.time.{Instant, LocalDate, LocalDateTime, ZoneId}
   import java.util.Date
 
   val monthNames = List(
@@ -21,6 +20,10 @@ object DateUtils {
     "October",
     "November",
     "December")
+
+  implicit def toJavaDate(jsDate: js.Date) = {
+    new Date(jsDate.getTime().toLong)
+  }
 
   implicit def asDate(localDate:LocalDate): Date = {
 //    Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant)

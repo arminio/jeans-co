@@ -6,6 +6,7 @@ import diode.data._
 import spatutorial.shared._
 import utest._
 
+//!@
 object SPACircuitTests extends TestSuite {
   def tests = TestSuite {
     'TodoHandler - {

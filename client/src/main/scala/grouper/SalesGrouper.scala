@@ -1,7 +1,8 @@
 package grouper
 
 import spatutorial.shared.Types.{Colour, Country, Manufacturer, Size, Style, YearMonth}
-import spatutorial.shared.{DateUtils, Sale, SaleFilter}
+import spatutorial.shared.{Sale, SaleFilter}
+import util.DateUtils
 
 import scala.scalajs.js
 
