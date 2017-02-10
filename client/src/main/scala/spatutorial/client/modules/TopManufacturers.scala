@@ -34,9 +34,8 @@ object TopManufacturers extends TopSellingGenericComponent {
     }
   }
 
-  // create the React component for To Do management
   val component = ReactComponentB[Props]("TopManufacturers")
-    .initialState_P((p: Props) => State(salesFilter = p.proxy().saleFilter)) // initial state from TodoStore
+    .initialState_P((p: Props) => State(salesFilter = p.proxy().saleFilter))
     .renderBackend[Backend]
     .componentDidMount(scope => scope.backend.mounted(scope.props))
     .build
