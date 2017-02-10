@@ -6,11 +6,14 @@ import grouper.SalesGrouper
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 import spatutorial.client.components.Bootstrap._
+import spatutorial.client.components.Chart
 import spatutorial.client.services._
 
+import scala.util.Random
 import scalacss.ScalaCssReact._
 
 object TopSellingCountries extends TopSellingGenericComponent{
+
 
   class Backend($: BackendScope[Props, State]) {
     def mounted(props: Props) =
@@ -23,9 +26,14 @@ object TopSellingCountries extends TopSellingGenericComponent{
         proxy.sales.renderPending(_ > 500, _ => "Loading..."),
         proxy.sales.render { sales =>
           val saleFilter = proxy.saleFilter
+          val topCountriesFiltered = SalesGrouper.topSellingCountries(sales.items, saleFilter)
+          val chart = Chart(chartProps(Random.nextString(10), Random.nextString(10), topCountriesFiltered.map(_.country), topCountriesFiltered.map(_.count.toDouble)))
+          
           <.div(
             createFilterSelectionArea(sales, saleFilter, $.props),
-            <.ul(style.listGroup)(SalesGrouper.topSellingCountries(sales.items, saleFilter) map { (s) => <.li(s.toString)})
+            chart,
+            <.ul(style.listGroup)(topCountriesFiltered map { (s) => <.li(s.toString)})
+
           )
         }
       ))

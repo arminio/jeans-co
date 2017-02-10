@@ -9,6 +9,7 @@ import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.prefix_<^._
 import spatutorial.client.SPAMain.{Loc, TodoLoc}
 import spatutorial.client.components._
+import util.RandomColourGenerator
 
 import scala.util.Random
 import scala.language.existentials
@@ -19,7 +20,7 @@ object Dashboard {
 
   case class State(motdWrapper: ReactConnectProxy[Pot[String]])
 
-  val r = Random
+
   // create dummy data for the chart
   val cp = Chart.ChartProps(
     "Test chart",
@@ -27,18 +28,8 @@ object Dashboard {
     ChartData(
       Random.alphanumeric.map(_.toUpper.toString).distinct.take(10),
       Seq(ChartDataset(Iterator.continually(Random.nextDouble() * 100).take(10).toSeq, "Data1",
-        Seq("#FF6384",
-          "#36A2EB",
-          "#FFCE56",
-          "#0E9A0C",
-          "#903BC7",
-          "#7B9867",
-          "#579537",
-          "#03123F",
-          "#CFC179",
-          "#DA4141",
-          "#A22A83"
-        )))
+        RandomColourGenerator.of(10)
+))
     )
   )
 

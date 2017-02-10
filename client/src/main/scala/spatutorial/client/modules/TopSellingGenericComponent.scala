@@ -6,6 +6,7 @@ import japgolly.scalajs.react.vdom.prefix_<^._
 import spatutorial.client.components._
 import spatutorial.client.services._
 import spatutorial.shared._
+import util.RandomColourGenerator
 
 trait TopSellingGenericComponent {
   case class Props(proxy: ModelProxy[SalesAndFilter])
@@ -19,6 +20,15 @@ trait TopSellingGenericComponent {
       None
     else
       Some(e.currentTarget.value)
+
+  def chartProps(name: String, label: String, dataLabels: Seq[String], data: Seq[Double]) =
+    Chart.ChartProps(
+      name,
+      Chart.PieChart,
+      ChartData(dataLabels, Seq(ChartDataset(data, label, RandomColourGenerator.of(data.size)))
+      )
+    )
+
 
   def makeOptions[T](fieldType: String, things: List[T], selectedItem: Option[T]) = {
     <.option(s"Select $fieldType", selectedItem.isEmpty ?= (^.selected := true)) +:

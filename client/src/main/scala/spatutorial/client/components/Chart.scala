@@ -1,7 +1,8 @@
 package spatutorial.client.components
 
+import japgolly.scalajs.react.CompScope.DuringCallbackM
 import japgolly.scalajs.react.vdom.prefix_<^._
-import japgolly.scalajs.react.{Callback, ReactComponentB}
+import japgolly.scalajs.react.{Callback, LifecycleInput, ReactComponentB}
 import org.scalajs.dom.raw.HTMLCanvasElement
 
 import scala.scalajs.js
@@ -76,19 +77,21 @@ object ChartConfiguration {
 // define a class to access the Chart.js component
 @js.native
 @JSName("Chart")
-class JSChart(ctx: js.Dynamic, config: ChartConfiguration) extends js.Object
+class JSChart(ctx: js.Dynamic, config: ChartConfiguration) extends js.Object {
+  def update(duration:Int, `lazy`:Boolean): Unit = js.native
+}
 
 object Chart {
 
-  // available chart styles
-  sealed trait ChartStyle
+  // available chart types
+  sealed trait ChartType
 
-  case object LineChart extends ChartStyle
-  case object BarChart extends ChartStyle
-  case object PieChart extends ChartStyle
-  case object DoughnutChart extends ChartStyle
+  case object LineChart extends ChartType
+  case object BarChart extends ChartType
+  case object PieChart extends ChartType
+  case object DoughnutChart extends ChartType
 
-  case class ChartProps(name: String, style: ChartStyle, data: ChartData, width: Int = 500, height: Int = 300)
+  case class ChartProps(name: String, chartType: ChartType, data: ChartData, width: Int = 500, height: Int = 300)
 
   val Chart = ReactComponentB[ChartProps]("Chart")
     .render_P(p =>
@@ -99,14 +102,19 @@ object Chart {
       // access context of the canvas
       val ctx = scope.getDOMNode().getContext("2d")
       // create the actual chart using the 3rd party component
-      scope.props.style match {
+      scope.props.chartType match {
         case LineChart => new JSChart(ctx, ChartConfiguration("line", scope.props.data))
         case BarChart => new JSChart(ctx, ChartConfiguration("bar", scope.props.data))
         case DoughnutChart => new JSChart(ctx, ChartConfiguration("doughnut", scope.props.data))
         case PieChart => new JSChart(ctx, ChartConfiguration("pie", scope.props.data))
         case _ => throw new IllegalArgumentException
       }
-    }).build
+    })
+//      .componentWillReceiveProps()
+    .build
 
-  def apply(props: ChartProps) = Chart(props)
+  def apply(props: ChartProps) = {
+    println(s"Making a new chart: $props")
+    Chart(props)
+  }
 }
