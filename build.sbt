@@ -1,3 +1,4 @@
+import org.scalajs.sbtplugin.ScalaJSPlugin.AutoImport.{jsEnv, scalaJSStage}
 import sbt.Keys._
 import sbt.Project.projectToRef
 
@@ -36,8 +37,13 @@ lazy val client: Project = (project in file("client"))
     skip in packageJSDependencies := false,
     // use Scala.js provided launcher code to start the client app
     persistLauncher := true,
-    persistLauncher in Test := false
+    persistLauncher in Test := false,
+    // Indicate that unit tests will access the DOM
+    requiresDOM := true,
 
+    // Compile tests to JS using fast-optimisation
+    scalaJSStage in Test := FastOptStage,
+    jsEnv in Test := new PhantomJS2Env(scalaJSPhantomJSClassLoader.value)
   )
   .enablePlugins(ScalaJSPlugin, ScalaJSWeb)
   .dependsOn(sharedJS)
@@ -83,4 +89,5 @@ lazy val ReleaseCmd = Command.command("release") {
 
 // loads the Play server project at sbt startup
 onLoad in Global := (Command.process("project server", _: State)) compose (onLoad in Global).value
+
 
