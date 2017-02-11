@@ -69,8 +69,8 @@ trait TopSellingGenericComponent {
 
   def createFilterSelectionArea(sales: Sales, saleFilter: SaleFilter, props: CallbackTo[Props]) = {
     <.div(
-      <.div(^.`class` := "form-group jumbotron",
-        <.h2("Use the filters below to get more targeted stats:"),
+      <.div(^.`class` := "form-group",
+        <.h2("Use these filters to get more targeted statistics:"),
         
         <.div(^.`class` := "col-sm-10", Icon.filter, " Filters: ",
           <.select(^.id := "colour", ^.onChange ==> colourFilterSelected(saleFilter, props), makeSelectOptions("Colour", sales.allColours, saleFilter.colour)),

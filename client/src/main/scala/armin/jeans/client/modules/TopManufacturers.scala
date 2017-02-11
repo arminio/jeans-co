@@ -1,18 +1,13 @@
 package armin.jeans.client.modules
 
 import armin.jeans.client.components.Bootstrap.{Button, Panel}
-import armin.jeans.client.components.Icon
-import armin.jeans.client.components.popup.ChartPopup
-import armin.jeans.client.modules.TopSellingCountries.bss
-import armin.jeans.client.modules.TopSellingSizes.listItems
+import armin.jeans.client.components.{ChartPopup, Icon}
 import armin.jeans.client.services.{RefreshSales, SalesAndFilter}
 import diode.react.ReactPot._
 import diode.react._
 import grouper.SalesGrouper
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
-
-import scalacss.ScalaCssReact._
 
 
 object TopManufacturers extends TopSellingGenericComponent {

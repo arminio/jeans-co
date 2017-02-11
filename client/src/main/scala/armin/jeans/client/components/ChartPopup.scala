@@ -1,11 +1,9 @@
-package armin.jeans.client.components.popup
+package armin.jeans.client.components
 
-import armin.jeans.client.components.GlobalStyles
-import japgolly.scalajs.react._
-import japgolly.scalajs.react.vdom.prefix_<^._
 import armin.jeans.client.components.Bootstrap._
 import armin.jeans.client.components.Chart.ChartProps
-import armin.jeans.client.components._
+import japgolly.scalajs.react._
+import japgolly.scalajs.react.vdom.prefix_<^._
 
 import scalacss.ScalaCssReact._
 

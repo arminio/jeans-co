@@ -2,7 +2,7 @@ package armin.jeans.client.modules
 
 import armin.jeans.client.components.Bootstrap._
 import armin.jeans.client.components.Icon
-import armin.jeans.client.components.popup.ChartPopup
+import armin.jeans.client.components.ChartPopup
 import armin.jeans.client.services._
 import diode.react.ReactPot._
 import diode.react._
@@ -11,8 +11,6 @@ import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 
 object TopSellingColours extends TopSellingGenericComponent {
-
-
 
   class Backend($: BackendScope[Props, State]) {
     def mounted(props: Props) =

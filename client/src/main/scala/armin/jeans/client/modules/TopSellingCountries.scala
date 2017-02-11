@@ -2,7 +2,7 @@ package armin.jeans.client.modules
 
 import armin.jeans.client.components.Bootstrap._
 import armin.jeans.client.components.Icon
-import armin.jeans.client.components.popup.ChartPopup
+import armin.jeans.client.components.ChartPopup
 import armin.jeans.client.services._
 import diode.react.ReactPot._
 import diode.react._

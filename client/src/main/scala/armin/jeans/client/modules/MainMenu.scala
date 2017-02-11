@@ -23,7 +23,7 @@ object MainMenu {
     MenuItem(2, _ => "Top Selling Sizes", Icon.sitemap, TopSellingSizesLoc),
     MenuItem(3, _ => "Top Selling Months", Icon.birthdayCake, TopSellingMonthsLoc),
     MenuItem(4, _ => "Top Selling Countries", Icon.flag, TopSellingCountriesLoc),
-    MenuItem(5, _ => "Top Selling Colours", Icon.reddit, TopSellingColoursLoc),
+    MenuItem(5, _ => "Top Selling Colours", Icon.paintBrush, TopSellingColoursLoc),
     MenuItem(6, _ => "Top Selling Styles", Icon.star, TopSellingStylesLoc)
   )
 
