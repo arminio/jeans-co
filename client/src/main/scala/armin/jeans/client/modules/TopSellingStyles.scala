@@ -1,18 +1,14 @@
 package armin.jeans.client.modules
 
+import armin.jeans.client.components.Bootstrap._
+import armin.jeans.client.components._
+import armin.jeans.client.components.popup.ChartPopup
+import armin.jeans.client.services._
 import diode.react.ReactPot._
 import diode.react._
 import grouper.SalesGrouper
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
-import armin.jeans.client.components.Bootstrap._
-import armin.jeans.client.components._
-import armin.jeans.client.components.popup.ChartPopup
-import armin.jeans.client.modules.TopSellingCountries.bss
-import armin.jeans.client.modules.TopSellingSizes.listItems
-import armin.jeans.client.services._
-
-import scalacss.ScalaCssReact._
 
 object TopSellingStyles extends TopSellingGenericComponent {
 
@@ -22,7 +18,7 @@ object TopSellingStyles extends TopSellingGenericComponent {
 
     def render(p: Props, s: State) = {
       val proxy = p.proxy()
-      Panel(Panel.Props("These are the top selling styles"), <.div(
+      Panel(Panel.Props("Top Selling Styles"), <.div(
         proxy.sales.renderFailed(ex => "Error loading"),
         proxy.sales.renderPending(_ > 500, _ => "Loading..."),
         proxy.sales.render { sales =>
@@ -53,7 +49,7 @@ object TopSellingStyles extends TopSellingGenericComponent {
     .componentDidMount(scope => scope.backend.mounted(scope.props))
     .build
 
-  /** Returns a function compatible with router location system while using our own props */
+
   def apply(proxy: ModelProxy[SalesAndFilter]) = component(Props(proxy))
 }
 

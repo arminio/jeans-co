@@ -37,9 +37,7 @@ lazy val client: Project = (project in file("client"))
     // use Scala.js provided launcher code to start the client app
     persistLauncher := true,
     persistLauncher in Test := false
-//      ,
-    // use uTest framework for tests
-//    testFrameworks += new TestFramework("utest.runner.Framework")
+
   )
   .enablePlugins(ScalaJSPlugin, ScalaJSWeb)
   .dependsOn(sharedJS)
@@ -82,7 +80,6 @@ lazy val ReleaseCmd = Command.command("release") {
     state
 }
 
-// lazy val root = (project in file(".")).aggregate(client, server)
 
 // loads the Play server project at sbt startup
 onLoad in Global := (Command.process("project server", _: State)) compose (onLoad in Global).value

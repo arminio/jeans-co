@@ -14,9 +14,9 @@ import scala.util.Random
 
 object Dashboard {
 
-  case class Props(router: RouterCtl[Loc], proxy: ModelProxy[Pot[String]])
+  case class Props(router: RouterCtl[Loc])
 
-  case class State(motdWrapper: ReactConnectProxy[Pot[String]])
+//  case class State(motdWrapper: ReactConnectProxy[Pot[String]])
 
 
   // create dummy data for the chart
@@ -34,7 +34,7 @@ object Dashboard {
   // create the React component for Dashboard
   private val component = ReactComponentB[Props]("Dashboard")
     // create and store the connect proxy in state for later use
-    .initialState_P(props => State(props.proxy.connect(m => m)))
+//    .initialState_P(props => State(props.proxy.connect(m => m)))
     .renderPS { (_, props, state) =>
       <.div(
         <.h2("Dashboard"),
@@ -51,5 +51,5 @@ object Dashboard {
     }
     .build
 
-  def apply(router: RouterCtl[Loc], proxy: ModelProxy[Pot[String]]) = component(Props(router, proxy))
+  def apply(router: RouterCtl[Loc]) = component(Props(router))
 }

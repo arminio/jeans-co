@@ -34,11 +34,11 @@ object SPAMain extends js.JSApp {
   val routerConfig = RouterConfigDsl[Loc].buildConfig { dsl =>
     import dsl._
 
-    val todoWrapper = SPACircuit.connect(_.todos)
+    
     val salesAndFilterWrapper = SPACircuit.connect(_.salesAndFilter)
     // wrap/connect components to the circuit
     (
-      staticRoute(root, DashboardLoc) ~> renderR(ctl => SPACircuit.wrap(_.motd)(proxy => Dashboard(ctl, proxy)))
+      staticRoute(root, DashboardLoc) ~> renderR(ctl => Dashboard(ctl))
       | staticRoute("#topManufactureres", TopManufacturersLoc) ~> renderR(ctl => salesAndFilterWrapper(TopManufacturers(_)))
       | staticRoute("#topSellingSizes", TopSellingSizesLoc) ~> renderR(ctl => salesAndFilterWrapper(TopSellingSizes(_)))
       | staticRoute("#topSellingMonths", TopSellingMonthsLoc) ~> renderR(ctl => salesAndFilterWrapper(TopSellingMonths(_)))
@@ -48,18 +48,15 @@ object SPAMain extends js.JSApp {
       ).notFound(redirectToPage(DashboardLoc)(Redirect.Replace))
   }.renderWith(layout)
 
-  val todoCountWrapper = SPACircuit.connect(_.todos.map(_.items.count(!_.completed)).toOption)
   // base layout for all pages
   def layout(c: RouterCtl[Loc], r: Resolution[Loc]) = {
     <.div(
       // here we use plain Bootstrap class names as these are specific to the top level layout defined here
       <.nav(^.className := "navbar navbar-inverse navbar-fixed-top",
         <.div(^.className := "container",
-          <.div(^.className := "navbar-header", <.span(^.className := "navbar-brand", "Armin Jeans")),
-          <.div(^.className := "collapse navbar-collapse",
-            // connect menu to model, because it needs to update when the number of open todos changes
-            todoCountWrapper(proxy => MainMenu(c, r.page, proxy))
-          )
+          <.div(^.className := "navbar-header", <.span(^.className := "navbar-brand", c.link(DashboardLoc)("Armin Jeans"))),
+          <.div(^.className := "collapse navbar-collapse", MainMenu(c, r.page))
+
         )
       ),
       // currently active module is shown in this container

@@ -48,33 +48,41 @@ trait TopSellingGenericComponent {
 
   def listItems[T](items: Seq[TopSelling[T]]) = {
     val label = items.headOption.fold("No Data")(i => i.getLabel)
-    <.table(^.`class` := "table" ,
-      <.thead(
-        <.th(label), <.th("Count")
-      ),
-      <.tbody(
-        items.map{ i =>
-          <.tr(
-            <.td(i.getCategory.toString),
-            <.td(i.count)
-          )
-        }
+
+    <.div(
+      <.table(^.`class` := "table",
+        <.thead(
+          <.th(label), <.th("Count")
+        ),
+        <.tbody(
+          items.map { i =>
+            <.tr(
+              <.td(i.getCategory.toString),
+              <.td(i.count)
+            )
+          }
+        )
       )
     )
   }
 
 
   def createFilterSelectionArea(sales: Sales, saleFilter: SaleFilter, props: CallbackTo[Props]) = {
-    <.div(^.`class` := "form-group",
-      <.div( ^.`class` := "col-sm-10",
-        <.select(^.id := "colour" ,^.onChange ==> colourFilterSelected(saleFilter, props), makeSelectOptions("Colour", sales.allColours, saleFilter.colour)),
-        <.select(^.id := "country", ^.onChange ==> countryFilterSelected(saleFilter, props), makeSelectOptions("Country", sales.allDeliveryCountries, saleFilter.deliveryCountry)),
-        <.select(^.id := "gender", ^.onChange ==> genderFilterSelected(saleFilter, props), makeSelectOptions("Gender", sales.allGenders, saleFilter.gender)),
-        <.select(^.id := "size", ^.onChange ==> sizeFilterSelected(saleFilter, props), makeSelectOptions("Size", sales.allSizes, saleFilter.size)),
-        <.select(^.id := "style", ^.onChange ==> styleFilterSelected(saleFilter, props), makeSelectOptions("Style", sales.allStyles, saleFilter.style)),
-//        <.button("Rest Filters", ^.onClick --> resetFilters(props)),
-      Button(Button.Props(resetFilters(props), addStyles = Seq(bss.buttonXSml)), Icon.refresh, " Reset")
+    <.div(
+      <.div(^.`class` := "form-group jumbotron",
+        <.h2("Use the filters below to get more targeted stats:"),
+        
+        <.div(^.`class` := "col-sm-10", Icon.filter, " Filters: ",
+          <.select(^.id := "colour", ^.onChange ==> colourFilterSelected(saleFilter, props), makeSelectOptions("Colour", sales.allColours, saleFilter.colour)),
+          <.select(^.id := "country", ^.onChange ==> countryFilterSelected(saleFilter, props), makeSelectOptions("Country", sales.allDeliveryCountries, saleFilter.deliveryCountry)),
+          <.select(^.id := "gender", ^.onChange ==> genderFilterSelected(saleFilter, props), makeSelectOptions("Gender", sales.allGenders, saleFilter.gender)),
+          <.select(^.id := "size", ^.onChange ==> sizeFilterSelected(saleFilter, props), makeSelectOptions("Size", sales.allSizes, saleFilter.size)),
+          <.select(^.id := "style", ^.onChange ==> styleFilterSelected(saleFilter, props), makeSelectOptions("Style", sales.allStyles, saleFilter.style)),
+          //        <.button("Rest Filters", ^.onClick --> resetFilters(props)),
+          Button(Button.Props(resetFilters(props), addStyles = Seq(bss.buttonXSml)), Icon.refresh, " Reset")
+        )
       )
+
     )
   }
 

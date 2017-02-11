@@ -2,15 +2,14 @@ import sbt._
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 
 /**
- * Application settings. Configure the build for your application here.
- * You normally don't have to touch the actual build definition after this.
+ * Application settings. Configure the build for application.
  */
 object Settings {
   /** The name of your application */
-  val name = "prototype2"
+  val name = "Armin Jeans"
 
   /** The version of your application */
-  val version = "1.1.4"
+  val version = "0.1.0"
 
   /** Options for the scala compiler */
   val scalacOptions = Seq(
@@ -57,7 +56,6 @@ object Settings {
     "com.github.tototoshi" %% "scala-csv" % "1.3.4",
     "org.webjars" % "font-awesome" % "4.3.0-1" % Provided,
     "org.webjars" % "bootstrap" % versions.bootstrap % Provided,
-    "com.lihaoyi" %% "utest" % versions.uTest % Test,
     "org.scalatest" %% "scalatest" % "3.0.1" % "test"
   ))
 
@@ -70,8 +68,6 @@ object Settings {
     "me.chrons" %%% "diode-react" % versions.diode,
     "org.scala-js" %%% "scalajs-dom" % versions.scalaDom,
     "org.scala-js" %%% "scalajs-java-time" % "0.2.0",
-    "com.github.karasiq" %%% "scalajs-highcharts" % "1.2.0",
-    "com.lihaoyi" %%% "utest" % versions.uTest % Test,
     "org.scalatest" %%% "scalatest" % "3.0.1" % "test"
 
   ))
@@ -83,7 +79,6 @@ object Settings {
     "org.webjars" % "jquery" % versions.jQuery / "jquery.js" minified "jquery.min.js",
     "org.webjars" % "bootstrap" % versions.bootstrap / "bootstrap.js" minified "bootstrap.min.js" dependsOn "jquery.js",
     "org.webjars" % "chartjs" % versions.chartjs / "Chart.js" minified "Chart.min.js",
-    "org.webjars" % "log4javascript" % versions.log4js / "js/log4javascript_uncompressed.js" minified "js/log4javascript.js",
-    "org.webjars" % "highcharts" % "5.0.7" / "js/highcharts.js" minified "js/highcharts.js"
+    "org.webjars" % "log4javascript" % versions.log4js / "js/log4javascript_uncompressed.js" minified "js/log4javascript.js"
   ))
 }

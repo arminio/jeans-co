@@ -3,16 +3,12 @@ package armin.jeans.client.modules
 import armin.jeans.client.components.Bootstrap._
 import armin.jeans.client.components.Icon
 import armin.jeans.client.components.popup.ChartPopup
-import armin.jeans.client.modules.TopSellingCountries.bss
-import armin.jeans.client.modules.TopSellingSizes.listItems
 import armin.jeans.client.services._
 import diode.react.ReactPot._
 import diode.react._
 import grouper.SalesGrouper
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
-
-import scalacss.ScalaCssReact._
 
 object TopSellingColours extends TopSellingGenericComponent {
 
@@ -24,7 +20,7 @@ object TopSellingColours extends TopSellingGenericComponent {
 
     def render(p: Props, s: State) = {
       val proxy = p.proxy()
-      Panel(Panel.Props("These are the Top Colours"), <.div(
+      Panel(Panel.Props("Top Sold Colours"), <.div(
         proxy.sales.renderFailed(ex => "Error loading"),
         proxy.sales.renderPending(_ > 500, _ => "Loading..."),
         proxy.sales.render { sales =>

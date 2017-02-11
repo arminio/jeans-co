@@ -1,18 +1,14 @@
 package armin.jeans.client.modules
 
-import diode.react.ReactPot._
-import diode.react._
-import grouper.{SalesGrouper, TopSelling, TopSellingSizes}
-import japgolly.scalajs.react._
-import japgolly.scalajs.react.vdom.prefix_<^._
 import armin.jeans.client.components.Bootstrap._
 import armin.jeans.client.components._
 import armin.jeans.client.components.popup.ChartPopup
-import armin.jeans.client.modules.TopSellingCountries.bss
 import armin.jeans.client.services._
-import armin.jeans.shared.Types.Size
-
-import scalacss.ScalaCssReact._
+import diode.react.ReactPot._
+import diode.react._
+import grouper.SalesGrouper
+import japgolly.scalajs.react._
+import japgolly.scalajs.react.vdom.prefix_<^._
 
 object TopSellingSizes extends TopSellingGenericComponent {
 
@@ -22,7 +18,7 @@ object TopSellingSizes extends TopSellingGenericComponent {
 
     def render(p: Props, s: State) = {
       val proxy = p.proxy()
-      Panel(Panel.Props("These are the top selling sizes"), <.div(
+      Panel(Panel.Props("Top Selling Sizes"), <.div(
         proxy.sales.renderFailed(ex => "Error loading"),
         proxy.sales.renderPending(_ > 500, _ => "Loading..."),
         proxy.sales.render { sales =>

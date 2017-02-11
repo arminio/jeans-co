@@ -4,10 +4,12 @@ import diode.ActionResult._
 import diode.RootModelRW
 import diode.data._
 import armin.jeans.shared._
+import org.scalatest.{FunSpec, Matchers}
 import utest._
 
 //!@
-object SPACircuitTests extends TestSuite {
+object SPACircuitTests extends FunSpec with Matchers {
+
   def tests = TestSuite {
     'TodoHandler - {
       val model = Ready(Todos(Seq(

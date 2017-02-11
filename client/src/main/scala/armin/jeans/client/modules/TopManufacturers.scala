@@ -23,7 +23,7 @@ object TopManufacturers extends TopSellingGenericComponent {
 
     def render(p: Props, s: State) = {
       val proxy = p.proxy()
-      Panel(Panel.Props("These are the Top Manufacturers"), <.div(
+      Panel(Panel.Props("Top Manufacturers"), <.div(
         proxy.sales.renderFailed(ex => "Error loading"),
         proxy.sales.renderPending(_ > 500, _ => "Loading..."),
         proxy.sales.render { sales =>
