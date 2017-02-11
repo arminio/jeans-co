@@ -1,4 +1,4 @@
-package spatutorial.shared
+package armin.jeans.shared
 
 
 import boopickle.Default._

@@ -3,7 +3,7 @@ package armin.jeans.client.components
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 import armin.jeans.client.components.Bootstrap.{CommonStyle, Button}
-import spatutorial.shared._
+import armin.jeans.shared._
 import scalacss.ScalaCssReact._
 
 object TodoList {

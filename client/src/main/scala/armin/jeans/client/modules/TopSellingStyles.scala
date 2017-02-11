@@ -9,7 +9,6 @@ import armin.jeans.client.components.Bootstrap._
 import armin.jeans.client.components._
 import armin.jeans.client.components.popup.ChartPopup
 import armin.jeans.client.services._
-import spatutorial.shared._
 
 import scalacss.ScalaCssReact._
 
@@ -21,7 +20,7 @@ object TopSellingStyles extends TopSellingGenericComponent {
 
     def render(p: Props, s: State) = {
       val proxy = p.proxy()
-      Panel(Panel.Props("These are the top selling countries"), <.div(
+      Panel(Panel.Props("These are the top selling styles"), <.div(
         proxy.sales.renderFailed(ex => "Error loading"),
         proxy.sales.renderPending(_ > 500, _ => "Loading..."),
         proxy.sales.render { sales =>

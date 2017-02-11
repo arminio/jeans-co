@@ -1,10 +1,10 @@
-package spatutorial.shared
+package armin.jeans.shared
 
 import java.text.SimpleDateFormat
 import java.util.Date
 
 import boopickle.Default._
-import spatutorial.shared.Types._
+import armin.jeans.shared.Types._
 
 import scala.util.Try
 

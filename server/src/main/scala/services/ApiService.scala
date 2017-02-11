@@ -4,7 +4,7 @@ import java.util.{Date, UUID}
 
 import com.github.tototoshi.csv._
 import play.api.libs.json.Json
-import spatutorial.shared._
+import armin.jeans.shared._
 
 import scala.io.Source
 

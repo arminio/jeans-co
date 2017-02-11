@@ -7,10 +7,10 @@ import com.google.inject.Inject
 import play.api.{Configuration, Environment}
 import play.api.mvc._
 import services.ApiService
-import spatutorial.shared.Api
+import armin.jeans.shared.Api
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import spatutorial.shared.Types._
+import armin.jeans.shared.Types._
 
 object Router extends autowire.Server[ByteBuffer, Pickler, Pickler] {
   override def read[R: Pickler](p: ByteBuffer) = Unpickle[R].fromBytes(p)

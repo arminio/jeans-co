@@ -3,7 +3,7 @@ package armin.jeans.client.services
 import diode.ActionResult._
 import diode.RootModelRW
 import diode.data._
-import spatutorial.shared._
+import armin.jeans.shared._
 import utest._
 
 //!@

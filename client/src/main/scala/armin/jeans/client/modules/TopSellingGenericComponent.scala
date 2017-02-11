@@ -1,11 +1,13 @@
 package armin.jeans.client.modules
 
-import armin.jeans.client.components.{Chart, ChartData, ChartDataset, GlobalStyles}
+import armin.jeans.client.components.Bootstrap.Button
+import armin.jeans.client.components._
+import armin.jeans.client.modules.TopSellingMonths.showChartPopup
 import armin.jeans.client.services.{ResetSalesFilter, Sales, SalesAndFilter, UpdatedSalesFilter}
 import diode.react._
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
-import spatutorial.shared._
+import armin.jeans.shared._
 import util.RandomColourGenerator
 
 trait TopSellingGenericComponent {
@@ -44,14 +46,16 @@ trait TopSellingGenericComponent {
   }
 
   def createFilterSelectionArea(sales: Sales, saleFilter: SaleFilter, props: CallbackTo[Props]) = {
-    <.div(
-        <.select(^.id := "colour", ^.onChange ==> colourFilterSelected(saleFilter, props), makeSelectOptions("Colour", sales.allColours, saleFilter.colour)),
+    <.div(^.`class` := "form-group",
+      <.div( ^.`class` := "col-sm-10",
+        <.select(^.id := "colour" ,^.onChange ==> colourFilterSelected(saleFilter, props), makeSelectOptions("Colour", sales.allColours, saleFilter.colour)),
         <.select(^.id := "country", ^.onChange ==> countryFilterSelected(saleFilter, props), makeSelectOptions("Country", sales.allDeliveryCountries, saleFilter.deliveryCountry)),
         <.select(^.id := "gender", ^.onChange ==> genderFilterSelected(saleFilter, props), makeSelectOptions("Gender", sales.allGenders, saleFilter.gender)),
         <.select(^.id := "size", ^.onChange ==> sizeFilterSelected(saleFilter, props), makeSelectOptions("Size", sales.allSizes, saleFilter.size)),
         <.select(^.id := "style", ^.onChange ==> styleFilterSelected(saleFilter, props), makeSelectOptions("Style", sales.allStyles, saleFilter.style)),
-        <.button("Rest Filters", ^.onClick --> resetFilters(props))
-
+//        <.button("Rest Filters", ^.onClick --> resetFilters(props)),
+      Button(Button.Props(resetFilters(props)), Icon.refresh, " Reset")
+      )
     )
   }
 

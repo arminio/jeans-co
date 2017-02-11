@@ -5,14 +5,14 @@ import diode._
 import diode.data._
 import diode.util._
 import diode.react.ReactConnector
-import spatutorial.shared.{Api, Sale, SaleFilter, TodoItem}
+import armin.jeans.shared.{Api, Sale, SaleFilter, TodoItem}
 import boopickle.Default._
 import grouper.SalesGrouper
-import spatutorial.shared.Types._
+import armin.jeans.shared.Types._
 //!@ intellij removes these imports :-(
 //import boopickle.Default._
 //import grouper.SalesGrouper
-//import spatutorial.shared.Types._
+//import armin.jeans.shared.Types._
 
 import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
 

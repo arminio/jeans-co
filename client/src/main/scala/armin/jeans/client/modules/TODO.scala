@@ -10,7 +10,7 @@ import armin.jeans.client.components.Bootstrap._
 import armin.jeans.client.components._
 import armin.jeans.client.logger._
 import armin.jeans.client.services._
-import spatutorial.shared._
+import armin.jeans.shared._
 
 import scalacss.ScalaCssReact._
 

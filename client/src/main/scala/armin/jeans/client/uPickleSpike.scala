@@ -4,7 +4,7 @@ import java.lang.Long
 import java.util.Date
 
 import prickle._
-import spatutorial.shared.Sale
+import armin.jeans.shared.Sale
 
 sealed trait Fruit
 case class Apple(isJuicy: Boolean) extends Fruit

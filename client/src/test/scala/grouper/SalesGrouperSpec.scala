@@ -3,7 +3,7 @@ package grouper
 import java.util.Date
 
 import org.scalatest.{FunSpec, Matchers}
-import spatutorial.shared.{Sale, SaleFilter}
+import armin.jeans.shared.{Sale, SaleFilter}
 
 import scala.scalajs.js
 
