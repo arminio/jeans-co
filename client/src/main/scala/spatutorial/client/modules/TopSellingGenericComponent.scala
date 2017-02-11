@@ -10,7 +10,7 @@ import util.RandomColourGenerator
 
 trait TopSellingGenericComponent {
   case class Props(proxy: ModelProxy[SalesAndFilter])
-  case class State(selectedItem: Option[Sale] = None, showTodoForm: Boolean = false, salesFilter: SaleFilter = SaleFilter.empty)
+  case class State(selectedItem: Option[Sale] = None, showChartPopup: Boolean = false, salesFilter: SaleFilter = SaleFilter.empty)
 
   @inline private def bss = GlobalStyles.bootstrapStyles
   val style = bss.listGroup

@@ -2,7 +2,7 @@ package spatutorial.client.components
 
 import japgolly.scalajs.react.CompScope.DuringCallbackM
 import japgolly.scalajs.react.vdom.prefix_<^._
-import japgolly.scalajs.react.{Callback, LifecycleInput, ReactComponentB}
+import japgolly.scalajs.react.{BackendScope, Callback, LifecycleInput, ReactComponentB}
 import org.scalajs.dom.raw.HTMLCanvasElement
 
 import scala.scalajs.js
@@ -93,24 +93,34 @@ object Chart {
 
   case class ChartProps(name: String, chartType: ChartType, data: ChartData, width: Int = 500, height: Int = 300)
 
-  val Chart = ReactComponentB[ChartProps]("Chart")
-    .render_P(p =>
+  case class State(data: ChartData)
+
+  class Backend($: BackendScope[ChartProps, State]) {
+
+    def render(p: ChartProps, state: State) = {
+      println(s"rendering the chart: $p, ${state.data.datasets}")
       <.canvas("width".reactAttr := p.width, "height".reactAttr := p.height)
-    )
+    }
+  }
+
+  val Chart = ReactComponentB[ChartProps]("Chart")
+    .initialState_P((p: ChartProps) => State(p.data))
+    .renderBackend[Backend]
     .domType[HTMLCanvasElement]
     .componentDidMount(scope => Callback {
       // access context of the canvas
       val ctx = scope.getDOMNode().getContext("2d")
       // create the actual chart using the 3rd party component
-      scope.props.chartType match {
+      val chart = scope.props.chartType match {
         case LineChart => new JSChart(ctx, ChartConfiguration("line", scope.props.data))
         case BarChart => new JSChart(ctx, ChartConfiguration("bar", scope.props.data))
         case DoughnutChart => new JSChart(ctx, ChartConfiguration("doughnut", scope.props.data))
         case PieChart => new JSChart(ctx, ChartConfiguration("pie", scope.props.data))
         case _ => throw new IllegalArgumentException
       }
+      chart
     })
-//      .componentWillReceiveProps()
+    .componentWillReceiveProps(x => x.$.modState(_.copy(data = x.nextProps.data)))
     .build
 
   def apply(props: ChartProps) = {
@@ -118,3 +128,5 @@ object Chart {
     Chart(props)
   }
 }
+
+
