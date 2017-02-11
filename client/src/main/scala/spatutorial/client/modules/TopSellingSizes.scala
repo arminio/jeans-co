@@ -2,15 +2,13 @@ package spatutorial.client.modules
 
 import diode.react.ReactPot._
 import diode.react._
-import diode.data.Pot
 import grouper.SalesGrouper
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 import spatutorial.client.components.Bootstrap._
 import spatutorial.client.components._
-import spatutorial.client.logger._
+import spatutorial.client.components.popup.ChartPopup
 import spatutorial.client.services._
-import spatutorial.shared._
 
 import scalacss.ScalaCssReact._
 
@@ -27,9 +25,19 @@ object TopSellingSizes extends TopSellingGenericComponent {
         proxy.sales.renderPending(_ > 500, _ => "Loading..."),
         proxy.sales.render { sales =>
           val saleFilter = proxy.saleFilter
+          val topSizesFiltered = SalesGrouper.topSellingSizes(sales.items, saleFilter)
           <.div(
             createFilterSelectionArea(sales, saleFilter, $.props),
-            <.ul(style.listGroup)(SalesGrouper.topSellingSizes(sales.items, saleFilter) map { (s) => <.li(s.toString)})
+            Button(Button.Props(showChartPopup($)), Icon.pieChart, " Chart"),
+
+            if (s.showChartPopup) {
+              ChartPopup(ChartPopup.Props(
+                chartProps(
+                  dataLabels = topSizesFiltered.map(_.size),
+                  data = topSizesFiltered.map(_.count.toDouble)), chartCloseHandler($)))
+            } else
+              Seq.empty[ReactElement],
+            <.ul(style.listGroup)(topSizesFiltered map { (s) => <.li(s.toString)})
           )
         }
       ))

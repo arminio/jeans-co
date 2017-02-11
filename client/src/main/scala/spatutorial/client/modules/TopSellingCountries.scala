@@ -6,12 +6,10 @@ import grouper.SalesGrouper
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 import spatutorial.client.components.Bootstrap._
-import spatutorial.client.components.Chart
+import spatutorial.client.components.Icon
 import spatutorial.client.components.popup.ChartPopup
 import spatutorial.client.services._
-import spatutorial.shared.TodoItem
 
-import scala.util.Random
 import scalacss.ScalaCssReact._
 
 object TopSellingCountries extends TopSellingGenericComponent{
@@ -21,12 +19,6 @@ object TopSellingCountries extends TopSellingGenericComponent{
     def mounted(props: Props) =
       Callback.when(props.proxy().sales.isEmpty)(props.proxy.dispatchCB(RefreshSales))
 
-    def chartCloseHandler(cancelled: Boolean): CallbackTo[Unit] = {
-      // hide the dialog
-      $.modState(s => s.copy(showChartPopup = false))
-    }
-
-
     def render(p: Props, s: State) = {
       val proxy = p.proxy()
       Panel(Panel.Props("These are the top selling countires"), <.div(
@@ -35,18 +27,15 @@ object TopSellingCountries extends TopSellingGenericComponent{
         proxy.sales.render { sales =>
           val saleFilter = proxy.saleFilter
           val topCountriesFiltered = SalesGrouper.topSellingCountries(sales.items, saleFilter)
-          val chartProps1 = chartProps(Random.nextString(10), Random.nextString(10), topCountriesFiltered.map(_.country), topCountriesFiltered.map(_.count.toDouble))
-//          val chart = Chart(chartProps1)
-
           <.div(
             createFilterSelectionArea(sales, saleFilter, $.props),
-            <.a("Chart", ^.onClick --> showChartPopup),
-//                        chart,
-            //            if (s.showChartPopup) TodoForm(TodoForm.Props(s.selectedItem, todoEdited))
-            //            else
-            //              Seq.empty[ReactElement])
+            Button(Button.Props(showChartPopup($)), Icon.pieChart, " Chart"),
+
             if (s.showChartPopup) {
-              ChartPopup(ChartPopup.Props(chartProps1, chartCloseHandler))
+              ChartPopup(ChartPopup.Props(
+                chartProps(
+                  dataLabels = topCountriesFiltered.map(_.country),
+                  data = topCountriesFiltered.map(_.count.toDouble)), chartCloseHandler($)))
             } else
               Seq.empty[ReactElement],
             <.ul(style.listGroup)(topCountriesFiltered map { (s) => <.li(s.toString)})
@@ -56,9 +45,7 @@ object TopSellingCountries extends TopSellingGenericComponent{
       ))
     }
 
-    def showChartPopup = {
-      $.modState(_.copy(showChartPopup = true))
-    }
+
   }
 
 

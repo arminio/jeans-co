@@ -7,6 +7,7 @@ import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 import spatutorial.client.components.Bootstrap._
 import spatutorial.client.components._
+import spatutorial.client.components.popup.ChartPopup
 import spatutorial.client.services._
 import spatutorial.shared._
 
@@ -25,9 +26,19 @@ object TopSellingStyles extends TopSellingGenericComponent {
         proxy.sales.renderPending(_ > 500, _ => "Loading..."),
         proxy.sales.render { sales =>
           val saleFilter = proxy.saleFilter
+          val topStylesFiltered = SalesGrouper.topSellingStyles(sales.items, saleFilter)
           <.div(
             createFilterSelectionArea(sales, saleFilter, $.props),
-            <.ul(style.listGroup)(SalesGrouper.topSellingStyles(sales.items, saleFilter) map { (s) => <.li(s.toString)})
+            Button(Button.Props(showChartPopup($)), Icon.pieChart, " Chart"),
+
+            if (s.showChartPopup) {
+              ChartPopup(ChartPopup.Props(
+                chartProps(
+                  dataLabels = topStylesFiltered.map(_.style),
+                  data = topStylesFiltered.map(_.count.toDouble)), chartCloseHandler($)))
+            } else
+              Seq.empty[ReactElement],
+            <.ul(style.listGroup)(topStylesFiltered map { (s) => <.li(s.toString)})
           )
         }
       ))

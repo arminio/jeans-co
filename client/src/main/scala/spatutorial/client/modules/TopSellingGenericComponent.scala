@@ -21,7 +21,7 @@ trait TopSellingGenericComponent {
     else
       Some(e.currentTarget.value)
 
-  def chartProps(name: String, label: String, dataLabels: Seq[String], data: Seq[Double]) =
+  def chartProps(name: String = "", label: String = "", dataLabels: Seq[String], data: Seq[Double]) =
     Chart.ChartProps(
       name,
       Chart.PieChart,
@@ -29,8 +29,16 @@ trait TopSellingGenericComponent {
       )
     )
 
+  def chartCloseHandler(childBackend: BackendScope[Props,State])(cancelled: Boolean): CallbackTo[Unit] = {
+    // hide the dialog
+    childBackend.modState(s => s.copy(showChartPopup = false))
+  }
 
-  def makeOptions[T](fieldType: String, things: List[T], selectedItem: Option[T]) = {
+  def showChartPopup(childBackend: BackendScope[Props,State]) = {
+    childBackend.modState(_.copy(showChartPopup = true))
+  }
+
+  def makeSelectOptions[T](fieldType: String, things: List[T], selectedItem: Option[T]) = {
     <.option(s"Select $fieldType", selectedItem.isEmpty ?= (^.selected := true)) +:
       things.map(t => <.option(selectedItem.fold(false)(_ == t.toString) ?= (^.selected := true), t.toString))
   }
@@ -38,11 +46,11 @@ trait TopSellingGenericComponent {
   def createFilterSelectionArea(sales: Sales, saleFilter: SaleFilter, props: CallbackTo[Props]) = {
     <.div(
       <.div(
-        <.select(^.id := "colour", ^.onChange ==> colourFilterSelected(saleFilter, props), makeOptions("Colour", sales.allColours, saleFilter.colour)),
-        <.select(^.id := "country", ^.onChange ==> countryFilterSelected(saleFilter, props), makeOptions("Country", sales.allDeliveryCountries, saleFilter.deliveryCountry)),
-        <.select(^.id := "gender", ^.onChange ==> genderFilterSelected(saleFilter, props), makeOptions("Gender", sales.allGenders, saleFilter.gender)),
-        <.select(^.id := "size", ^.onChange ==> sizeFilterSelected(saleFilter, props), makeOptions("Size", sales.allSizes, saleFilter.size)),
-        <.select(^.id := "style", ^.onChange ==> styleFilterSelected(saleFilter, props), makeOptions("Style", sales.allStyles, saleFilter.style))
+        <.select(^.id := "colour", ^.onChange ==> colourFilterSelected(saleFilter, props), makeSelectOptions("Colour", sales.allColours, saleFilter.colour)),
+        <.select(^.id := "country", ^.onChange ==> countryFilterSelected(saleFilter, props), makeSelectOptions("Country", sales.allDeliveryCountries, saleFilter.deliveryCountry)),
+        <.select(^.id := "gender", ^.onChange ==> genderFilterSelected(saleFilter, props), makeSelectOptions("Gender", sales.allGenders, saleFilter.gender)),
+        <.select(^.id := "size", ^.onChange ==> sizeFilterSelected(saleFilter, props), makeSelectOptions("Size", sales.allSizes, saleFilter.size)),
+        <.select(^.id := "style", ^.onChange ==> styleFilterSelected(saleFilter, props), makeSelectOptions("Style", sales.allStyles, saleFilter.style))
       ),
       <.button("Rest Filters", ^.onClick --> resetFilters(props))
     )
