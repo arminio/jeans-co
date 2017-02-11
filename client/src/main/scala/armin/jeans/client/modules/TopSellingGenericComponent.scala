@@ -52,7 +52,7 @@ trait TopSellingGenericComponent {
     <.div(
       <.table(^.`class` := "table",
         <.thead(
-          <.th(label), <.th("Count")
+          <.th(label, ^.`class` := "col-md-3"), <.th("Count", ^.`class` := "col-md-3")
         ),
         <.tbody(
           items.map { i =>

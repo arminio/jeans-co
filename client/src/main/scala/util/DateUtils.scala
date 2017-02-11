@@ -1,6 +1,7 @@
 package util
 
 import scala.scalajs.js
+import scala.language.implicitConversions
 
 object DateUtils {
 

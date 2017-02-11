@@ -2,7 +2,7 @@ package armin.jeans.client
 
 import armin.jeans.client.components.GlobalStyles
 import armin.jeans.client.modules._
-import armin.jeans.client.services.SPACircuit
+import armin.jeans.client.services.ArminJeansAppCircuit
 import armin.jeans.client.logger._
 import japgolly.scalajs.react.ReactDOM
 import japgolly.scalajs.react.extra.router._
@@ -35,7 +35,7 @@ object SPAMain extends js.JSApp {
     import dsl._
 
     
-    val salesAndFilterWrapper = SPACircuit.connect(_.salesAndFilter)
+    val salesAndFilterWrapper = ArminJeansAppCircuit.connect(_.salesAndFilter)
     // wrap/connect components to the circuit
     (
       staticRoute(root, DashboardLoc) ~> renderR(ctl => Dashboard(ctl))
