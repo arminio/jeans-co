@@ -21,7 +21,7 @@ object TopSellingStyles extends TopSellingGenericComponent {
 
     def render(p: Props, s: State) = {
       val proxy = p.proxy()
-      Panel(Panel.Props("These are the top selling countires"), <.div(
+      Panel(Panel.Props("These are the top selling countries"), <.div(
         proxy.sales.renderFailed(ex => "Error loading"),
         proxy.sales.renderPending(_ > 500, _ => "Loading..."),
         proxy.sales.render { sales =>
@@ -34,6 +34,7 @@ object TopSellingStyles extends TopSellingGenericComponent {
             if (s.showChartPopup) {
               ChartPopup(ChartPopup.Props(
                 chartProps(
+                  name = "Top Selling Countries",
                   dataLabels = topStylesFiltered.map(_.style),
                   data = topStylesFiltered.map(_.count.toDouble)), chartCloseHandler($)))
             } else
