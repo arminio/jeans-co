@@ -1,9 +1,7 @@
 package armin.jeans.client.modules
 
-import java.awt.Color
-
-import armin.jeans.client.SPAMain.{Loc, TodoLoc}
-import armin.jeans.client.components.{Chart, ChartData, ChartDataset, Motd}
+import armin.jeans.client.SPAMain._
+import armin.jeans.client.components.{Chart, ChartData, ChartDataset}
 import diode.data.Pot
 import diode.react._
 import japgolly.scalajs.react._
@@ -11,8 +9,8 @@ import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.prefix_<^._
 import util.RandomColourGenerator
 
-import scala.util.Random
 import scala.language.existentials
+import scala.util.Random
 
 object Dashboard {
 
@@ -26,8 +24,8 @@ object Dashboard {
     "Test chart",
     Chart.PieChart,
     ChartData(
-      Random.alphanumeric.map(_.toUpper.toString).distinct.take(10),
-      Seq(ChartDataset(Iterator.continually(Random.nextDouble() * 100).take(10).toSeq, "Data1",
+      Seq("Armin", "Keyvanloo", "Scala.js", "React", "Diode"),
+      Seq(ChartDataset(Iterator.continually(Random.nextDouble() * 100).take(5).toSeq, "Data1",
         RandomColourGenerator.of(10)
 ))
     )
@@ -39,12 +37,16 @@ object Dashboard {
     .initialState_P(props => State(props.proxy.connect(m => m)))
     .renderPS { (_, props, state) =>
       <.div(
-        // header, MessageOfTheDay and chart components
         <.h2("Dashboard"),
-        state.motdWrapper(Motd(_)),
         Chart(cp),
-        // create a link to the To Do view
-        <.div(props.router.link(TodoLoc)("Check your todos!"))
+        <.h3("Check your:"),
+        // create a link to the pages
+        <.div(props.router.link(TopManufacturersLoc)("Top selling Manufacturers")),
+        <.div(props.router.link(TopSellingSizesLoc)("Top selling Sizes")),
+        <.div(props.router.link(TopSellingMonthsLoc)("Top selling Months")),
+        <.div(props.router.link(TopSellingCountriesLoc)("Top selling Countries")),
+        <.div(props.router.link(TopSellingColoursLoc)("Top selling Colours")),
+        <.div(props.router.link(TopSellingStylesLoc)("Top selling Styles"))
       )
     }
     .build

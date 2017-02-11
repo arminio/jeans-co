@@ -3,6 +3,8 @@ package armin.jeans.client.modules
 import armin.jeans.client.components.Bootstrap._
 import armin.jeans.client.components.Icon
 import armin.jeans.client.components.popup.ChartPopup
+import armin.jeans.client.modules.TopSellingCountries.bss
+import armin.jeans.client.modules.TopSellingSizes.listItems
 import armin.jeans.client.services._
 import diode.react.ReactPot._
 import diode.react._
@@ -28,7 +30,7 @@ object TopSellingMonths extends TopSellingGenericComponent {
           val topMonthsFiltered = SalesGrouper.topSellingMonths(sales.items, saleFilter)
           <.div(
             createFilterSelectionArea(sales, saleFilter, $.props),
-            Button(Button.Props(showChartPopup($)), Icon.pieChart, " Chart"),
+            Button(Button.Props(showChartPopup($), addStyles = Seq(bss.buttonXSml)), Icon.pieChart, " Chart"),
 
             if (s.showChartPopup) {
               ChartPopup(ChartPopup.Props(
@@ -37,7 +39,7 @@ object TopSellingMonths extends TopSellingGenericComponent {
                   data = topMonthsFiltered.map(_.count.toDouble)), chartCloseHandler($)))
             } else
               Seq.empty[ReactElement],
-            <.ul(style.listGroup)(topMonthsFiltered map { (s) => <.li(s.toString)})
+            listItems(topMonthsFiltered)
           )
         }
       ))

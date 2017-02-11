@@ -8,6 +8,8 @@ import japgolly.scalajs.react.vdom.prefix_<^._
 import armin.jeans.client.components.Bootstrap._
 import armin.jeans.client.components._
 import armin.jeans.client.components.popup.ChartPopup
+import armin.jeans.client.modules.TopSellingCountries.bss
+import armin.jeans.client.modules.TopSellingSizes.listItems
 import armin.jeans.client.services._
 
 import scalacss.ScalaCssReact._
@@ -28,7 +30,7 @@ object TopSellingStyles extends TopSellingGenericComponent {
           val topStylesFiltered = SalesGrouper.topSellingStyles(sales.items, saleFilter)
           <.div(
             createFilterSelectionArea(sales, saleFilter, $.props),
-            Button(Button.Props(showChartPopup($)), Icon.pieChart, " Chart"),
+            Button(Button.Props(showChartPopup($), addStyles = Seq(bss.buttonXSml)), Icon.pieChart, " Chart"),
 
             if (s.showChartPopup) {
               ChartPopup(ChartPopup.Props(
@@ -38,7 +40,7 @@ object TopSellingStyles extends TopSellingGenericComponent {
                   data = topStylesFiltered.map(_.count.toDouble)), chartCloseHandler($)))
             } else
               Seq.empty[ReactElement],
-            <.ul(style.listGroup)(topStylesFiltered map { (s) => <.li(s.toString)})
+            listItems(topStylesFiltered)
           )
         }
       ))

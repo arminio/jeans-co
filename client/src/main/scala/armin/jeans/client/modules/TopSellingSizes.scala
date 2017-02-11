@@ -2,13 +2,15 @@ package armin.jeans.client.modules
 
 import diode.react.ReactPot._
 import diode.react._
-import grouper.SalesGrouper
+import grouper.{SalesGrouper, TopSelling, TopSellingSizes}
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 import armin.jeans.client.components.Bootstrap._
 import armin.jeans.client.components._
 import armin.jeans.client.components.popup.ChartPopup
+import armin.jeans.client.modules.TopSellingCountries.bss
 import armin.jeans.client.services._
+import armin.jeans.shared.Types.Size
 
 import scalacss.ScalaCssReact._
 
@@ -28,7 +30,7 @@ object TopSellingSizes extends TopSellingGenericComponent {
           val topSizesFiltered = SalesGrouper.topSellingSizes(sales.items, saleFilter)
           <.div(
             createFilterSelectionArea(sales, saleFilter, $.props),
-            Button(Button.Props(showChartPopup($)), Icon.pieChart, " Chart"),
+            Button(Button.Props(showChartPopup($), addStyles = Seq(bss.buttonXSml)), Icon.pieChart, " Chart"),
 
             if (s.showChartPopup) {
               ChartPopup(ChartPopup.Props(
@@ -37,12 +39,13 @@ object TopSellingSizes extends TopSellingGenericComponent {
                   data = topSizesFiltered.map(_.count.toDouble)), chartCloseHandler($)))
             } else
               Seq.empty[ReactElement],
-            <.ul(style.listGroup)(topSizesFiltered map { (s) => <.li(s.toString)})
+            listItems(topSizesFiltered)
           )
         }
       ))
     }
   }
+
 
 
   val component = ReactComponentB[Props]("Sizes")

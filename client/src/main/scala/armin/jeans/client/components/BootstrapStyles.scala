@@ -23,8 +23,13 @@ class BootstrapStyles(implicit r: mutable.Register) extends StyleSheet.Inline()(
 
   def styleWrap(classNames: String*) = style(addClassNames(classNames: _*))
 
-  val buttonOpt = commonStyle(csDomain, "btn")
+  val buttonSmlOpt = commonStyle(csDomain, "btn btn-sm")
+  val buttonSml = buttonSmlOpt(default)
 
+  val buttonXSmlOpt = commonStyle(csDomain, "btn btn-xs")
+  val buttonXSml = buttonXSmlOpt(danger)
+
+  val buttonOpt = commonStyle(csDomain, "btn")
   val button = buttonOpt(default)
 
   val panelOpt = commonStyle(csDomain, "panel")

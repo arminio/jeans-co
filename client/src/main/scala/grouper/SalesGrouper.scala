@@ -6,17 +6,41 @@ import util.DateUtils
 
 import scala.scalajs.js
 
-case class TopSellingManufacturer(manufacturer: Manufacturer, count: Int)
+sealed trait TopSelling[T] {
+  def getLabel:String
+  def getCategory:T
+  val count: Int
+}
 
-case class TopSellingSizes(size: Size, count: Int)
+case class TopSellingManufacturer(manufacturer: Manufacturer, count: Int) extends TopSelling[Manufacturer] {
+  def getLabel = "Manufacturer"
+  def getCategory = manufacturer
+}
 
-case class TopSellingMonths(yearMonth: YearMonth, count: Int)
+case class TopSellingSizes(size: Size, count: Int) extends TopSelling[Size] {
+  def getLabel = "Size"
+  def getCategory = size
+}
 
-case class TopSellingCountries(country: Country, count: Int)
+case class TopSellingMonths(yearMonth: YearMonth, count: Int) extends TopSelling[YearMonth] {
+  def getLabel = "Year Month"
+  def getCategory = yearMonth
+}
 
-case class TopSellingColours(colour:Colour, count: Int)
+case class TopSellingCountries(country: Country, count: Int) extends TopSelling[Country] {
+  def getLabel = "Country"
+  def getCategory = country
+}
 
-case class TopSellingStyles(style:Style, count: Int)
+case class TopSellingColours(colour:Colour, count: Int) extends TopSelling[Colour] {
+  def getLabel = "Colour"
+  def getCategory = colour
+}
+
+case class TopSellingStyles(style:Style, count: Int) extends TopSelling[Style] {
+  def getLabel = "Style"
+  def getCategory = style
+}
 
 object SalesGrouper {
 

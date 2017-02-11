@@ -22,8 +22,6 @@ object SPAMain extends js.JSApp {
 
   case object DashboardLoc extends Loc
 
-  case object TodoLoc extends Loc
-  
   case object TopManufacturersLoc extends Loc
   case object TopSellingSizesLoc extends Loc
   case object TopSellingMonthsLoc extends Loc
@@ -47,7 +45,6 @@ object SPAMain extends js.JSApp {
       | staticRoute("#topSellingCountries", TopSellingCountriesLoc) ~> renderR(ctl => salesAndFilterWrapper(TopSellingCountries(_)))
       | staticRoute("#topSellingColours", TopSellingColoursLoc) ~> renderR(ctl => salesAndFilterWrapper(TopSellingColours(_)))
       | staticRoute("#topSellingStyles", TopSellingStylesLoc) ~> renderR(ctl => salesAndFilterWrapper(TopSellingStyles(_)))
-      | staticRoute("#todo", TodoLoc) ~> renderR(ctl => <.h1("to does go here"))
       ).notFound(redirectToPage(DashboardLoc)(Redirect.Replace))
   }.renderWith(layout)
 
@@ -58,7 +55,7 @@ object SPAMain extends js.JSApp {
       // here we use plain Bootstrap class names as these are specific to the top level layout defined here
       <.nav(^.className := "navbar navbar-inverse navbar-fixed-top",
         <.div(^.className := "container",
-          <.div(^.className := "navbar-header", <.span(^.className := "navbar-brand", "SPA Tutorial")),
+          <.div(^.className := "navbar-header", <.span(^.className := "navbar-brand", "Armin Jeans")),
           <.div(^.className := "collapse navbar-collapse",
             // connect menu to model, because it needs to update when the number of open todos changes
             todoCountWrapper(proxy => MainMenu(c, r.page, proxy))

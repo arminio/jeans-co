@@ -8,6 +8,7 @@ import japgolly.scalajs.react.vdom.prefix_<^._
 import armin.jeans.client.components.Bootstrap._
 import armin.jeans.client.components.Icon
 import armin.jeans.client.components.popup.ChartPopup
+import armin.jeans.client.modules.TopSellingSizes.listItems
 import armin.jeans.client.services._
 
 import scalacss.ScalaCssReact._
@@ -29,7 +30,7 @@ object TopSellingCountries extends TopSellingGenericComponent{
           val topCountriesFiltered = SalesGrouper.topSellingCountries(sales.items, saleFilter)
           <.div(
             createFilterSelectionArea(sales, saleFilter, $.props),
-            Button(Button.Props(showChartPopup($)), Icon.pieChart, " Chart"),
+            Button(Button.Props(showChartPopup($), addStyles = Seq(bss.buttonXSml)), Icon.pieChart, " Chart"),
 
             if (s.showChartPopup) {
               ChartPopup(ChartPopup.Props(
@@ -38,7 +39,7 @@ object TopSellingCountries extends TopSellingGenericComponent{
                   data = topCountriesFiltered.map(_.count.toDouble)), chartCloseHandler($)))
             } else
               Seq.empty[ReactElement],
-            <.ul(style.listGroup)(topCountriesFiltered map { (s) => <.li(s.toString)})
+            listItems(topCountriesFiltered)
           )
           
         }

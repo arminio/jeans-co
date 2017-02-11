@@ -1,6 +1,6 @@
 package armin.jeans.client.modules
 
-import armin.jeans.client.components.Bootstrap.Button
+import armin.jeans.client.components.Bootstrap.{Button, CommonStyle}
 import armin.jeans.client.components._
 import armin.jeans.client.modules.TopSellingMonths.showChartPopup
 import armin.jeans.client.services.{ResetSalesFilter, Sales, SalesAndFilter, UpdatedSalesFilter}
@@ -8,13 +8,14 @@ import diode.react._
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 import armin.jeans.shared._
+import grouper.TopSelling
 import util.RandomColourGenerator
 
 trait TopSellingGenericComponent {
   case class Props(proxy: ModelProxy[SalesAndFilter])
   case class State(selectedItem: Option[Sale] = None, showChartPopup: Boolean = false, salesFilter: SaleFilter = SaleFilter.empty)
 
-  @inline private def bss = GlobalStyles.bootstrapStyles
+  @inline protected def bss = GlobalStyles.bootstrapStyles
   val style = bss.listGroup
 
   def newSelectedValue(e: ReactEventI) =
@@ -45,6 +46,24 @@ trait TopSellingGenericComponent {
       things.map(t => <.option(selectedItem.fold(false)(_ == t.toString) ?= (^.selected := true), t.toString))
   }
 
+  def listItems[T](items: Seq[TopSelling[T]]) = {
+    val label = items.headOption.fold("No Data")(i => i.getLabel)
+    <.table(^.`class` := "table" ,
+      <.thead(
+        <.th(label), <.th("Count")
+      ),
+      <.tbody(
+        items.map{ i =>
+          <.tr(
+            <.td(i.getCategory.toString),
+            <.td(i.count)
+          )
+        }
+      )
+    )
+  }
+
+
   def createFilterSelectionArea(sales: Sales, saleFilter: SaleFilter, props: CallbackTo[Props]) = {
     <.div(^.`class` := "form-group",
       <.div( ^.`class` := "col-sm-10",
@@ -54,7 +73,7 @@ trait TopSellingGenericComponent {
         <.select(^.id := "size", ^.onChange ==> sizeFilterSelected(saleFilter, props), makeSelectOptions("Size", sales.allSizes, saleFilter.size)),
         <.select(^.id := "style", ^.onChange ==> styleFilterSelected(saleFilter, props), makeSelectOptions("Style", sales.allStyles, saleFilter.style)),
 //        <.button("Rest Filters", ^.onClick --> resetFilters(props)),
-      Button(Button.Props(resetFilters(props)), Icon.refresh, " Reset")
+      Button(Button.Props(resetFilters(props), addStyles = Seq(bss.buttonXSml)), Icon.refresh, " Reset")
       )
     )
   }
