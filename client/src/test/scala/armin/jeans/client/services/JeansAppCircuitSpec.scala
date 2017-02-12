@@ -8,17 +8,10 @@ import diode.data._
 import armin.jeans.shared._
 import org.scalatest.{FunSpec, Matchers}
 
-class ArminJeansAppCircuitSpec extends FunSpec with Matchers {
+class JeansAppCircuitSpec extends FunSpec with Matchers {
 
   describe("SalesHandler") {
-    val model
-    = Ready(
-      Sales(
-        Seq(
-          Sale(new Date(), "Country0", "Maufaturer1", "M", "32", "Red", "Skinny", 10)
-        )
-      )
-    )
+    val model = Sales(Seq(Sale(new Date(), "Country0", "Maufaturer1", "M", "32", "Red", "Skinny", 10)))
 
     val build = new SalesHandler(new RootModelRW(model))
     it("should handle refreshing the sales using an effect") {
@@ -39,12 +32,11 @@ class ArminJeansAppCircuitSpec extends FunSpec with Matchers {
           Sale(new Date(), "Country1", "Maufaturer1", "M", "32", "Red", "Skinny", 10),
           Sale(new Date(), "Country1", "Maufaturer2", "M", "32", "Red", "Skinny", 10),
           Sale(new Date(), "Country1", "Maufaturer3", "M", "32", "Red", "Skinny", 10)
-
         )
 
       val h = build
       val result = h.handle(UpdateAllSales(salesFromServer))
-      assert(result == ModelUpdate(Ready(Sales(salesFromServer))))
+      assert(result == ModelUpdate(Sales(salesFromServer)))
     }
   }
 

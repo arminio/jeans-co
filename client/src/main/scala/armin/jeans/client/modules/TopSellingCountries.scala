@@ -15,18 +15,15 @@ object TopSellingCountries extends TopSellingGenericComponent{
   class Backend($: BackendScope[Props, State]) {
 
     def mounted(props: Props) =
-      Callback.when(props.proxy().sales.isEmpty)(props.proxy.dispatchCB(RefreshSales))
+      Callback.when(props.proxy().sales.items.isEmpty)(props.proxy.dispatchCB(RefreshSales))
 
     def render(p: Props, s: State) = {
       val proxy = p.proxy()
+      val saleFilter = proxy.saleFilter
+      val topCountriesFiltered = SalesGrouper.topSellingCountries(proxy.sales.items, saleFilter)
       Panel(Panel.Props("Top Selling Countries"), <.div(
-        proxy.sales.renderFailed(ex => "Error loading"),
-        proxy.sales.renderPending(_ > 500, _ => "Loading..."),
-        proxy.sales.render { sales =>
-          val saleFilter = proxy.saleFilter
-          val topCountriesFiltered = SalesGrouper.topSellingCountries(sales.items, saleFilter)
           <.div(
-            createFilterSelectionArea(sales, saleFilter, $.props),
+            createFilterSelectionArea(proxy.sales, saleFilter, $.props),
             Button(Button.Props(showChartPopup($), addStyles = Seq(bss.buttonXSml)), Icon.pieChart, " Chart"),
 
             if (s.showChartPopup) {
@@ -38,8 +35,7 @@ object TopSellingCountries extends TopSellingGenericComponent{
               Seq.empty[ReactElement],
             listItems(topCountriesFiltered)
           )
-          
-        }
+
       ))
     }
 

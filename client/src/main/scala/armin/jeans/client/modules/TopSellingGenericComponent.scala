@@ -49,10 +49,12 @@ trait TopSellingGenericComponent {
   def listItems[T](items: Seq[TopSelling[T]]) = {
     val label = items.headOption.fold("No Data")(i => i.getLabel)
 
-    <.div(
+    <.div(^.`class` := "top-selling-list",
       <.table(^.`class` := "table",
         <.thead(
+          <.tr(
           <.th(label, ^.`class` := "col-md-3"), <.th("Count", ^.`class` := "col-md-3")
+          )
         ),
         <.tbody(
           items.map { i =>
@@ -69,7 +71,7 @@ trait TopSellingGenericComponent {
 
   def createFilterSelectionArea(sales: Sales, saleFilter: SaleFilter, props: CallbackTo[Props]) = {
     <.div(
-      <.div(^.`class` := "form-group",
+      <.div(^.`class` := "form-group filter-area",
         <.h2("Use these filters to get more targeted statistics:"),
         
         <.div(^.`class` := "col-sm-10", Icon.filter, " Filters: ",
@@ -78,7 +80,6 @@ trait TopSellingGenericComponent {
           <.select(^.id := "gender", ^.onChange ==> genderFilterSelected(saleFilter, props), makeSelectOptions("Gender", sales.allGenders, saleFilter.gender)),
           <.select(^.id := "size", ^.onChange ==> sizeFilterSelected(saleFilter, props), makeSelectOptions("Size", sales.allSizes, saleFilter.size)),
           <.select(^.id := "style", ^.onChange ==> styleFilterSelected(saleFilter, props), makeSelectOptions("Style", sales.allStyles, saleFilter.style)),
-          //        <.button("Rest Filters", ^.onClick --> resetFilters(props)),
           Button(Button.Props(resetFilters(props), addStyles = Seq(bss.buttonXSml)), Icon.refresh, " Reset")
         )
       )

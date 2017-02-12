@@ -24,7 +24,7 @@ case class UpdateAllSales(sales: Seq[Sale]) extends Action
 case class UpdatedSalesFilter(salesFilter: SaleFilter) extends Action
 case object ResetSalesFilter extends Action
 
-case class SalesAndFilter(sales: Pot[Sales], saleFilter: SaleFilter)
+case class SalesAndFilter(sales: Sales, saleFilter: SaleFilter)
 
 // The base model of our application
 case class RootModel(salesAndFilter: SalesAndFilter)
@@ -48,13 +48,13 @@ case class Sales(items: Seq[Sale]) {
   *
   * @param modelRW Reader/Writer to access the model
   */
-class SalesHandler[M](modelRW: ModelRW[M, Pot[Sales]]) extends ActionHandler(modelRW) {
+class SalesHandler[M](modelRW: ModelRW[M, Sales]) extends ActionHandler(modelRW) {
   override def handle = {
     case RefreshSales =>
       effectOnly(Effect(AjaxClient[Api].getAllOrders().call().map(UpdateAllSales)))
     case UpdateAllSales(sales) =>
       // got new sales, update model
-      updated(Ready(Sales(sales)))
+      updated(Sales(sales))
   }
 }
 /**
@@ -75,9 +75,9 @@ class FilterUpdateHandler[M](modelRW: ModelRW[M, SaleFilter]) extends ActionHand
 
 // Application circuit
 //!@
-object ArminJeansAppCircuit extends Circuit[RootModel] with ReactConnector[RootModel] {
+object JeansAppCircuit extends Circuit[RootModel] with ReactConnector[RootModel] {
   // initial application model
-  override protected def initialModel = RootModel(SalesAndFilter(Empty, SaleFilter.empty))
+  override protected def initialModel = RootModel(SalesAndFilter(Sales(Seq.empty), SaleFilter.empty))
   // combine all handlers into one
   override protected val actionHandler = composeHandlers(
     new SalesHandler(zoomRW(_.salesAndFilter.sales)((m, v) => m.copy(salesAndFilter = m.salesAndFilter.copy(sales = v)))),
