@@ -1,4 +1,4 @@
-package util
+package armin.jeans.client.util
 
 import org.scalatest.{FunSpec, Matchers}
 

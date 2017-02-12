@@ -1,4 +1,4 @@
-package util
+package armin.jeans.client.util
 
 import scala.scalajs.js
 import scala.language.implicitConversions

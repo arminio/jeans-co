@@ -13,7 +13,7 @@ import diode.react.ReactConnector
 //import grouper.SalesGrouper
 //import armin.jeans.shared.Types._
 import boopickle.Default._
-import grouper.SalesGrouper
+import armin.jeans.client.grouper.SalesGrouper
 import armin.jeans.shared.Types._
 
 import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue

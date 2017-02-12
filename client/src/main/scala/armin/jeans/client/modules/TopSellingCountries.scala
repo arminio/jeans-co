@@ -6,7 +6,7 @@ import armin.jeans.client.components.ChartPopup
 import armin.jeans.client.services._
 import diode.react.ReactPot._
 import diode.react._
-import grouper.SalesGrouper
+import armin.jeans.client.grouper.SalesGrouper
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 

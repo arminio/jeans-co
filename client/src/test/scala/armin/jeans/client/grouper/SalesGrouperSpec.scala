@@ -1,4 +1,4 @@
-package grouper
+package armin.jeans.client.grouper
 
 import java.util.Date
 
@@ -155,7 +155,7 @@ class SalesGrouperSpec extends FunSpec with Matchers {
   }
 
   describe("top selling months") {
-    import util.DateUtils._
+    import armin.jeans.client.util.DateUtils._
 
     val jan1 = new js.Date(2016, 0, 1)
     val jan2 = new js.Date(2016, 0, 2)

@@ -4,7 +4,7 @@ import armin.jeans.client.components.Bootstrap.{Button, Panel}
 import armin.jeans.client.components.{ChartPopup, Icon}
 import armin.jeans.client.services.{RefreshSales, SalesAndFilter}
 import diode.react._
-import grouper.SalesGrouper
+import armin.jeans.client.grouper.SalesGrouper
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 

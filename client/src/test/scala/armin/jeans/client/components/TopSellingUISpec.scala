@@ -1,4 +1,4 @@
-package spike
+package armin.jeans.client.components
 
 import java.util.Date
 

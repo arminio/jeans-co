@@ -7,7 +7,7 @@ import diode.react._
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.prefix_<^._
-import util.RandomColourGenerator
+import armin.jeans.client.util.RandomColourGenerator
 
 import scala.language.existentials
 import scala.util.Random

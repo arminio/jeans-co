@@ -8,8 +8,8 @@ import diode.react._
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 import armin.jeans.shared._
-import grouper.TopSelling
-import util.RandomColourGenerator
+import armin.jeans.client.grouper.TopSelling
+import armin.jeans.client.util.RandomColourGenerator
 
 trait TopSellingGenericComponent {
   case class Props(proxy: ModelProxy[SalesAndFilter])

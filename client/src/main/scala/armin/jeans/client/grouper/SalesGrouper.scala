@@ -1,8 +1,8 @@
-package grouper
+package armin.jeans.client.grouper
 
 import armin.jeans.shared.Types.{Colour, Country, Manufacturer, Size, Style, YearMonth}
 import armin.jeans.shared.{Sale, SaleFilter}
-import util.DateUtils
+import armin.jeans.client.util.DateUtils
 
 import scala.scalajs.js
 
