@@ -41,10 +41,7 @@ trait TopSellingGenericComponent {
     childBackend.modState(_.copy(showChartPopup = true))
   }
 
-  def makeSelectOptions[T](fieldType: String, things: List[T], selectedItem: Option[T]) = {
-    <.option(s"Select $fieldType", selectedItem.isEmpty ?= (^.selected := true)) +:
-      things.map(t => <.option(selectedItem.fold(false)(_ == t.toString) ?= (^.selected := true), t.toString))
-  }
+
 
   def listItems[T](items: Seq[TopSelling[T]]) = {
     val label = items.headOption.fold("No Data")(i => i.getLabel)
@@ -70,21 +67,35 @@ trait TopSellingGenericComponent {
 
 
   def createFilterSelectionArea(sales: Sales, saleFilter: SaleFilter, props: CallbackTo[Props]) = {
+    val colourKey = "Colour"
+    val countryKey = "Country"
+    val genderKey = "Gender"
+    val sizeKey = "Size"
+    val styleKey = "Style"
     <.div(
       <.div(^.`class` := "form-group filter-area",
         <.h2("Use these filters to get more targeted statistics:"),
         
         <.div(^.`class` := "col-sm-10", Icon.filter, " Filters: ",
-          <.select(^.id := "colour", ^.onChange ==> colourFilterSelected(saleFilter, props), makeSelectOptions("Colour", sales.allColours, saleFilter.colour)),
-          <.select(^.id := "country", ^.onChange ==> countryFilterSelected(saleFilter, props), makeSelectOptions("Country", sales.allDeliveryCountries, saleFilter.deliveryCountry)),
-          <.select(^.id := "gender", ^.onChange ==> genderFilterSelected(saleFilter, props), makeSelectOptions("Gender", sales.allGenders, saleFilter.gender)),
-          <.select(^.id := "size", ^.onChange ==> sizeFilterSelected(saleFilter, props), makeSelectOptions("Size", sales.allSizes, saleFilter.size)),
-          <.select(^.id := "style", ^.onChange ==> styleFilterSelected(saleFilter, props), makeSelectOptions("Style", sales.allStyles, saleFilter.style)),
+          <.select(^.id := "colour", ^.value := saleFilter.colour.getOrElse(defaultSelectValue(colourKey)),^.onChange ==> colourFilterSelected(saleFilter, props), makeSelectOptions(colourKey, sales.allColours, saleFilter.colour)),
+          <.select(^.id := "country", ^.value := saleFilter.deliveryCountry.getOrElse(defaultSelectValue(countryKey)), ^.onChange ==> countryFilterSelected(saleFilter, props), makeSelectOptions(countryKey, sales.allDeliveryCountries, saleFilter.deliveryCountry)),
+          <.select(^.id := "gender", ^.value := saleFilter.gender.getOrElse(defaultSelectValue(genderKey)), ^.onChange ==> genderFilterSelected(saleFilter, props), makeSelectOptions(genderKey, sales.allGenders, saleFilter.gender)),
+          <.select(^.id := "size", ^.value := saleFilter.size.getOrElse(defaultSelectValue(sizeKey)), ^.onChange ==> sizeFilterSelected(saleFilter, props), makeSelectOptions(sizeKey, sales.allSizes, saleFilter.size)),
+          <.select(^.id := "style", ^.value := saleFilter.style.getOrElse(defaultSelectValue(styleKey)), ^.onChange ==> styleFilterSelected(saleFilter, props), makeSelectOptions(styleKey, sales.allStyles, saleFilter.style)),
           Button(Button.Props(resetFilters(props), addStyles = Seq(bss.buttonXSml)), Icon.refresh, " Reset")
         )
       )
 
     )
+  }
+
+  def makeSelectOptions[T](fieldType: String, things: List[T], selectedItem: Option[T]) = {
+    <.option(defaultSelectValue(fieldType)) +:
+      things.map(t => <.option(selectedItem.fold(false)(_ == t.toString) ?= (^.selected := true), t.toString))
+  }
+
+  private def defaultSelectValue[T](fieldType: String) = {
+    s"Select $fieldType"
   }
 
   def colourFilterSelected(saleFilter: SaleFilter, props: CallbackTo[Props])(e: ReactEventI) =
