@@ -72,9 +72,6 @@ class FilterUpdateHandler[M](modelRW: ModelRW[M, SaleFilter]) extends ActionHand
 }
 
 
-
-// Application circuit
-//!@
 object JeansAppCircuit extends Circuit[RootModel] with ReactConnector[RootModel] {
   // initial application model
   override protected def initialModel = RootModel(SalesAndFilter(Sales(Seq.empty), SaleFilter.empty))
