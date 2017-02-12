@@ -2,9 +2,7 @@ package armin.jeans.client.util
 
 import org.scalatest.{FunSpec, Matchers}
 
-/**
-  * Created by armin.
-  */
+
 class RandomColourGeneratorSpec extends FunSpec with Matchers {
   describe("Random colours") {
     it("should generate valid colours") {

@@ -3,9 +3,7 @@ package armin.jeans.shared
 
 import boopickle.Default._
 
-/**
-  * Created by armin.
-  */
+
 object Types {
   type YearMonth = String
   type Country = String

@@ -8,9 +8,7 @@ import armin.jeans.shared.{Sale, SaleFilter}
 import scala.scalajs.js
 
 
-/**
-  * Created by armin.
-  */
+
 class SalesGrouperSpec extends FunSpec with Matchers {
   val male = "M"
   val female = "F"

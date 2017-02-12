@@ -2,9 +2,7 @@ package armin.jeans.client.util
 
 import scala.util.Random
 
-/**
-  * Created by armin.
-  */
+
 object RandomColourGenerator {
 
   val r = Random
