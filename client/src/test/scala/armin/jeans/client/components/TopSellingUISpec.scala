@@ -1,4 +1,4 @@
-package armin.jeans.client.components
+package armin.jeans.client
 
 import java.util.Date
 
@@ -72,6 +72,7 @@ class TopSellingUISpec extends FunSpec with Matchers {
 
           val text = jQuery(div).text()
 
+
           val pageNameHint = s"Page that errored: ${page._2}"
           assert(text.contains("Use these filters to get more targeted statistics:"), pageNameHint)
           assert(text.contains("Filters:"), pageNameHint)
@@ -101,6 +102,25 @@ class TopSellingUISpec extends FunSpec with Matchers {
         val appCircuit = new TestAppCircuit (testSales)
         val reactConnectProxy: ReactConnectProxy[SalesAndFilter] = appCircuit.connect(_.salesAndFilter)
 
+        //------------------------------------------------------
+        it("should test Manufacturers with jquery find ----------") {
+          val tableRows = getTableBodyAsText(reactConnectProxy(TopManufacturers(_)))
+          tableRows.length shouldBe 2
+          val firstRowTds = jQuery(tableRows(0)).find("td")
+          firstRowTds.length shouldBe 2
+          jQuery(firstRowTds(0)).text() shouldBe "Nike"
+          jQuery(firstRowTds(1)).text() shouldBe "88"
+
+          val secondRowTds = jQuery(tableRows(1)).find("td")
+          secondRowTds.length shouldBe 2
+          jQuery(secondRowTds(0)).text() shouldBe "Adidas"
+          jQuery(secondRowTds(1)).text() shouldBe "19"
+
+
+        }
+        //------------------------------------------------------
+
+        
         it("should list the Top Manufacturers") {
           getTableBodyAsText(reactConnectProxy(TopManufacturers(_))).text() shouldBe "Nike88Adidas19"
         }
